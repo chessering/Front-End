@@ -29,13 +29,13 @@ export default function UserInfo() {
   )
 }
 
-const ProfileBox = styled.div`
+export const ProfileBox = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
   border-bottom: #D4D4D4 1px solid;
 `
-const ProfileWrap = styled.div`
+export const ProfileWrap = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 60px;

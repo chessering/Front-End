@@ -1,12 +1,13 @@
 import Header from "./header/header";
 import Footer from "./footer/footer";
-import UserProfile from "../pages/UserProfile";
+import Donwload from "../pages/Donwload";
+
 
 export default function Layout() {
   return (
     <div>
       <Header />
-        <UserProfile></UserProfile>
+        <Donwload></Donwload>
       <Footer />
     </div>
   );
