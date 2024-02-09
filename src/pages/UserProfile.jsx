@@ -3,6 +3,7 @@ import UserInfo from '../components/Profile/UserInfo'
 import styled from 'styled-components'
 import Photos from '../components/Profile/Photos'
 import Pagination from '../components/Profile/Pagination'
+import Modal from '../components/Profile/Modal'
 
 export default function UserProfile() {
   // const fetchProfile = async () => {
@@ -17,6 +18,7 @@ export default function UserProfile() {
         <UserInfo></UserInfo>
         <Photos></Photos>
         <Pagination></Pagination>
+        <Modal title="팔로워"></Modal>
     </ProfileWrap>
   )
 }
