@@ -4,11 +4,10 @@ import { ProfileBox, ProfileWrap } from '../Profile/UserInfo'
 
 export default function ImgInfo() {
   const [isMore, setIsMore]= useState(false);
-  const textLimit = useRef(53);
-  const comment = `신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의`;
+  const textLimit = useRef(60);
+  const comment = `신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 `;
   const commenter = useMemo(() => {
     const shortReview = comment.slice(0, textLimit.current);
-
     if (comment.length > textLimit.current) {
       if (isMore) { return comment; }
       return shortReview;
@@ -25,11 +24,10 @@ export default function ImgInfo() {
           <Title>제목</Title>
           <DownloadBtn>저장</DownloadBtn>
         </TitleWrap>
-        <Description>
-          {commenter}
-          <div onClick={() => setIsMore(!isMore)}> {(comment.length>textLimit.current) && (isMore ? '[닫기]' : '...[더 보기]')}</div>
-        </Description>
-        
+        <DescriptionWrap>
+          <Description>{commenter}</Description>
+          <More onClick={() => setIsMore(!isMore)}> {(comment.length>textLimit.current) && (isMore ? '닫기' : '...더 보기')}</More>
+        </DescriptionWrap>        
         <TagList>
           <Tag>태그 1</Tag>
           <Tag>태그 1</Tag>
@@ -122,17 +120,33 @@ const DownloadBtn = styled.button`
   color: #FFFFFF;
 `
 
+const DescriptionWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 const Description = styled.div`
   display: flex;
   
   width: 352px;
-  height: 52px;
-
   font-family: 'Pretendard Variable';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 158%;
+
+  color: #6B6B6B;
+`
+
+const More = styled.div`
+  height: 25px;
+
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 158%;
+  /* or 25px */
+  letter-spacing: 0.06em;
 
   color: #6B6B6B;
 `
