@@ -177,21 +177,21 @@ const Tag = styled.li`
   color: #6B6B6B;
 `
 
-const UploaderWrap = styled.div`
+export const UploaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
 `
 
-const UserWrap = styled.div`
+export const UserWrap = styled.div`
   display: flex;
 `
 
-const UserIDWrap = styled.div`
+export const UserIDWrap = styled.div`
   display: flex;
   flex-direction: column;
 `
 
-const ProfileImg = styled.img`
+export const ProfileImg = styled.img`
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -200,7 +200,7 @@ const ProfileImg = styled.img`
   margin-right: 10px;
 `
 
-const UserID = styled.div`
+export const UserID = styled.div`
   width: 54px;
   height: 25px;
 
@@ -214,7 +214,7 @@ const UserID = styled.div`
   color: #6B6B6B;
 `
 
-const Followers = styled.div`
+export const Followers = styled.div`
   width: 53px;
   height: 19px;
 
@@ -228,7 +228,7 @@ const Followers = styled.div`
   color: #9D9D9D;
 `
 
-const FollowBtn = styled.button`
+export const FollowBtn = styled.button`
   width: 66px;
   height: 34px;
 

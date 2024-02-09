@@ -1,10 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { ReactComponent as Close } from "../../assets/images/icon_Close.svg"
 import { ReactComponent as Search } from "../../assets/images/icon_Search.svg"
+import { UploaderWrap, UserWrap, UserIDWrap, ProfileImg, UserID, Followers, FollowBtn } from '../Download/ImgInfo';
 
 export default function Modal({ title }) {
   const [searchingId, setSearchingId] = useState('')
+
+  const ids = () => {
+    const list = [];
+    for (let i=0; i<10; i++){
+      list.push(
+          <ResultWrap>
+            <UserWrap>
+              <ProfileImg></ProfileImg>
+              <UserIDWrap>
+                <UserID>User ID</UserID>
+                <Name>이름</Name>
+              </UserIDWrap>
+            </UserWrap>
+            <FollowBtn>삭제</FollowBtn>
+          </ResultWrap>
+        )
+    }
+    return list;
+  }
+
   console.log(searchingId);
   return (
     <ModalWrap>
@@ -17,6 +38,9 @@ export default function Modal({ title }) {
             setSearchingId(e.target.value);
           }}></SearchInput>
         </SearchBar>
+        <ResultList>
+          {ids()}
+        </ResultList>
       </ModalBox>
     </ModalWrap>
   )
@@ -42,6 +66,8 @@ const ModalBox = styled.div`
 
   background: #FFFFFF;
   border-radius: 16px;
+
+  overflow: hidden;
 `
 
 const CloseWrap = styled.div`
@@ -54,6 +80,7 @@ const CloseWrap = styled.div`
 
   display: flex;
   
+  cursor: pointer;
 `
 
 const Title = styled.div`
@@ -109,4 +136,28 @@ const SearchInput = styled.input`
   color: #A5A5A5;
 
   outline: none;
+`
+
+const ResultList = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 540px;
+  height: 379px;
+  margin-top: 30px;
+
+  position: absolute;
+  left: 18px;
+  top: 126px;
+
+  overflow: scroll;
+`
+
+const ResultWrap = styled(UploaderWrap)`
+  padding-left: 10px;
+  padding-right: 44px;
+
+  margin-bottom: 20px;
+`
+const Name = styled(Followers)`
 `

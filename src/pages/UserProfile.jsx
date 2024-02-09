@@ -18,7 +18,6 @@ export default function UserProfile() {
         <UserInfo></UserInfo>
         <Photos></Photos>
         <Pagination></Pagination>
-        <Modal title="팔로워"></Modal>
     </ProfileWrap>
   )
 }
