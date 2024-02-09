@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ProfileBox, ProfileWrap } from '../Profile/UserInfo'
 
 export default function ImgInfo() {
+  const [isMore, setIsMore]= useState(false);
+  const textLimit = useRef(53);
+  const comment = `신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의`;
+  const commenter = useMemo(() => {
+    const shortReview = comment.slice(0, textLimit.current);
+
+    if (comment.length > textLimit.current) {
+      if (isMore) { return comment; }
+      return shortReview;
+    }
+    return comment;
+  }, [isMore])
+
   return (
     <ImgBox>
       <ImgWrap>
@@ -12,7 +25,11 @@ export default function ImgInfo() {
           <Title>제목</Title>
           <DownloadBtn>저장</DownloadBtn>
         </TitleWrap>
-        <Description>신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의</Description>
+        <Description>
+          {commenter}
+          <div onClick={() => setIsMore(!isMore)}> {(comment.length>textLimit.current) && (isMore ? '[닫기]' : '...[더 보기]')}</div>
+        </Description>
+        
         <TagList>
           <Tag>태그 1</Tag>
           <Tag>태그 1</Tag>
