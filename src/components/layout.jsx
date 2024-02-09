@@ -1,11 +1,12 @@
 import Header from "./header/header";
 import Footer from "./footer/footer";
+import Myinfo from "../pages/Myinfo.jsx";
 
 export default function Layout() {
   return (
     <div>
       <Header />
-      <h2>main</h2>
+        <Myinfo/>
       <Footer />
     </div>
   );
