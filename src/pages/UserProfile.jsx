@@ -3,7 +3,6 @@ import UserInfo from '../components/Profile/UserInfo'
 import styled from 'styled-components'
 import Photos from '../components/Profile/Photos'
 import Pagination from '../components/Profile/Pagination'
-import Modal from '../components/Profile/Modal'
 
 export default function UserProfile() {
   // const fetchProfile = async () => {
