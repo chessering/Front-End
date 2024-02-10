@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams, useLocation } from 'react-router-dom'
 import UserInfo from '../components/Profile/UserInfo'
 import styled from 'styled-components'
 import Photos from '../components/Profile/Photos'
@@ -12,9 +13,13 @@ export default function UserProfile() {
   //     console.log(res);
   //   }
   // }
+
+  const { userid } = useParams();
+  const location = useLocation();
+
   return (
     <ProfileWrap>
-        <UserInfo></UserInfo>
+        <UserInfo userid={userid} location={location}></UserInfo>
         <Photos></Photos>
         <Pagination></Pagination>
     </ProfileWrap>

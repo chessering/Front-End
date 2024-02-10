@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 import { ReactComponent as Close } from "../../assets/images/icon_Close.svg"
 import { ReactComponent as Search } from "../../assets/images/icon_Search.svg"
@@ -6,6 +7,8 @@ import { UploaderWrap, UserWrap, UserIDWrap, ProfileImg, UserID, Followers, Foll
 
 export default function Modal({ title }) {
   const [searchingId, setSearchingId] = useState('')
+  const { userid } = useParams();
+  const navigate = useNavigate();
 
   const ids = () => {
     const list = [];
@@ -27,10 +30,16 @@ export default function Modal({ title }) {
   }
 
   console.log(searchingId);
+  console.log(userid)
+  const closeModal = (e) => {
+    e.preventDefault();
+    navigate(`/profile/${userid}`)
+  }
+
   return (
-    <ModalWrap>
-      <ModalBox>
-        <CloseWrap><Close/></CloseWrap>
+    <ModalWrap onClick={closeModal}>
+      <ModalBox onClick={e => e.stopPropagation()}>
+        <CloseWrap onClick={closeModal}><Close/></CloseWrap>
         <Title>{title}</Title>
         <SearchBar>
           <SearchWrap><Search/></SearchWrap>
