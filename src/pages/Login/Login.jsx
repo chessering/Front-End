@@ -2,20 +2,32 @@ import React from 'react';
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({mode:"onChange"});
 
   const navigate = useNavigate();
   const gotoAuth =() =>{
     navigate('/auth');
   }
   const onSubmit =(data) =>{
-    console.log(data);
+      console.log(data);
+      axios
+        .post(`${""}/api/auth/login`,{
+          login_id : data.id,
+          password : data.pw,
+        })
+        .then((res)=>{
+          console.log(res);
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
   }
   return (
     <Container>
@@ -29,11 +41,15 @@ const Login = () => {
             type='text'
             placeholder='아이디'
             {...register("id",{
-              required:"아이디는 필수 입력입니다.",
-              minLength:{value:2, message:"2글자 이상 입력해주세요."},
-              maxLength:{value:10, message:"최대 10글자 입력이 가능합니다."}
+              required: true,
+              pattern:{
+                value:
+                /^[A-Za-z0-9]{4,12}$/,
+                message: "영어 대소문자와 숫자를 혼합해 4-12글자로 구성해주세요."
+              }
             })}/>
-            {errors.id && <AlertMessage>{errors.id.message}</AlertMessage>}
+            {errors.id?.type === "required" && <AlertMessage>아이디는 필수 입력입니다.</AlertMessage>}
+            {errors.id?.type === "pattern" && <AlertMessage>{errors.id.message}</AlertMessage>}
         </div>
         <div>
           <label htmlFor='userpw'>암호</label>
@@ -42,14 +58,15 @@ const Login = () => {
             type='password'
             placeholder='암호'
             {...register('password',{
-              required:"암호는 필수 입력입니다.",
+              required: true,
               pattern:{
                 value:
-                  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,}$/,
                 message: "비밀번호 형식이 맞지 않습니다.",
               }
             })}/>
-            {errors.password && <AlertMessage>{errors.password.message}</AlertMessage>}
+            {errors.password?.type === "required" && <AlertMessage>비밀번호는 필수 입력입니다.</AlertMessage>}
+            {errors.password?.type === "pattern" && <AlertMessage>{errors.password.message}</AlertMessage>}
         </div>
         <div>
           <LoginButton type='submit'>로그인</LoginButton>
@@ -121,6 +138,7 @@ const LoginOption = styled.div`
 const AlertMessage = styled.span`
   display: block;
   margin-bottom: 10px;
+  font-size: 14px;
   color: #FF4646;
 `;
 export default Login
