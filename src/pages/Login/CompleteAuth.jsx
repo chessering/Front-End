@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ReactComponent as RegistrationCompleted } from "../../assets/images/Illust_Registration Completed.svg";
+import { ReactComponent as RegistrationCompleted } from "../../assets/images/Illust_Registration Completed.svg"
+
 
 const CompleteAuth = () => {
   const navigate = useNavigate();
