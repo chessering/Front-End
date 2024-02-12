@@ -1,14 +1,16 @@
 import Header from "./header/header";
 import Footer from "./footer/footer";
-import Mainpage from "../pages/mainpage";
+import { Outlet } from 'react-router-dom';
 
 
-export default function Layout() {
+function Layout( ) {
   return (
     <div>
       <Header />
-      <Mainpage />
+      <Outlet />
       <Footer />
     </div>
   );
 }
+
+export default Layout;
