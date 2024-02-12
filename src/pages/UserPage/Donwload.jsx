@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import ImgInfo from '../components/Download/ImgInfo'
-import Photos from '../components/Profile/Photos'
-import Pagination from '../components/Profile/Pagination'
+import ImgInfo from '../../components/Download/ImgInfo'
+import Photos from '../../components/Profile/Photos'
+import Pagination from '../../components/Profile/Pagination'
 
 export default function Donwload() {
   return (

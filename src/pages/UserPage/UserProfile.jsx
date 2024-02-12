@@ -1,9 +1,9 @@
 import React from 'react'
 import { useParams, useLocation } from 'react-router-dom'
-import UserInfo from '../components/Profile/UserInfo'
+import UserInfo from '../../components/Profile/UserInfo'
 import styled from 'styled-components'
-import Photos from '../components/Profile/Photos'
-import Pagination from '../components/Profile/Pagination'
+import Photos from '../../components/Profile/Photos'
+import Pagination from '../../components/Profile/Pagination'
 
 export default function UserProfile() {
   // const fetchProfile = async () => {

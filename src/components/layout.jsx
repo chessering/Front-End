@@ -1,14 +1,16 @@
 import Header from "./header/header";
 import Footer from "./footer/footer";
-import Myinfo from "../pages/Myinfo.jsx";
+import { Outlet } from 'react-router-dom';
 
 
-export default function Layout() {
+function Layout( ) {
   return (
     <div>
       <Header />
-        <Myinfo/>
+      <Outlet /> 
       <Footer />
     </div>
   );
 }
+
+export default Layout;
