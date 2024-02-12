@@ -118,6 +118,10 @@ const DownloadBtn = styled.button`
   line-height: 158%;
 
   color: #FFFFFF;
+
+  &:hover {
+  background: #2F2F2F;
+  }
 `
 
 const DescriptionWrap = styled.div`
@@ -243,6 +247,12 @@ export const FollowBtn = styled.button`
   /* or 22px */
 
   color: #6B6B6B;
+
+  &:hover {
+  background: #2F2F2F;
+
+  color: #FFFFFF;
+  }
 `
 const OtherWrap = styled.div`
   display: flex;
