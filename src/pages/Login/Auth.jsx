@@ -10,23 +10,23 @@ const Auth = () => {
         handleSubmit,
         formState: { errors },
         getValues,
-      } = useForm();
+      } = useForm({mode:"onChange"});
     const navigate = useNavigate();
     const onSubmit =(data) =>{
         console.log(data);
-        // axios
-        //   .post(`${}/api/auth/join`,{
-        //     login_id : data.id,
-        //     password : data.pw,
-        //     email : data.email,
-        //   })
-        //   .then((res)=>{
-        //     console.log(res);
-        //     navigate('/authcomplete');
-        //   })
-        //   .catch((err)=>{
-        //     console.log(err);
-        //   })
+        axios
+          .post(`${""}/api/auth/join`,{
+            login_id : data.id,
+            password : data.pw,
+            email : data.email,
+          })
+          .then((res)=>{
+            console.log(res);
+            navigate('/authcomplete');
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
     }
   return (
     <Container>
@@ -39,11 +39,15 @@ const Auth = () => {
             type='text'
             placeholder='아이디'
             {...register("id",{
-              required:"아이디는 필수 입력입니다.",
-              minLength:{value:2, message:"2글자 이상 입력해주세요."},
-              maxLength:{value:10, message:"최대 10글자 입력이 가능합니다."}
+              required: true,
+              pattern:{
+                value:
+                /^[A-Za-z0-9]{4,12}$/,
+                message: "영어 대소문자와 숫자를 혼합해 4-12글자로 구성해주세요."
+              }
             })}/>
-            {errors.id && <AlertMessage>{errors.id.message}</AlertMessage>}
+            {errors.id?.type === "required" && <AlertMessage>아이디는 필수 입력입니다.</AlertMessage>}
+            {errors.id?.type === "pattern" && <AlertMessage>{errors.id.message}</AlertMessage>}
         </div>
         <div>
           <label htmlFor='userpw'>비밀번호</label>
@@ -52,14 +56,15 @@ const Auth = () => {
             type='password'
             placeholder='비밀번호'
             {...register('password',{
-              required:"비밀번호는 필수 입력입니다.",
+              required: true,
               pattern:{
                 value:
-                  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,}$/,
                 message: "비밀번호 형식이 맞지 않습니다.",
               }
             })}/>
-            {errors.password && <AlertMessage>{errors.password.message}</AlertMessage>}
+            {errors.password?.type === "required" && <AlertMessage>비밀번호는 필수 입력입니다.</AlertMessage>}
+            {errors.password?.type === "pattern" && <AlertMessage>{errors.password.message}</AlertMessage>}
         </div>
         <div>
           <label htmlFor='userpwck'>비밀번호 재확인</label>
@@ -68,7 +73,7 @@ const Auth = () => {
             type='password'
             placeholder='비밀번호'
             {...register('passwordCheck',{
-              required:"비밀번호는 필수 입력입니다.",
+              required:"비밀번호 재확인이 필요합니다.",
               validate:{
                 check : val=>{
                     if(getValues("password") !== val){
@@ -86,13 +91,14 @@ const Auth = () => {
             type='text'
             placeholder='drawdesktop@email.com'
             {...register("email",{
-              required:"이메일은 필수 입력입니다.",
+              required: true,
               pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "대소문자 구분하여 입력해주세요",
+                value: /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]{2,3})$/,
+                message: "대소문자 구분하여 이메일 형식에 맞게 입력해주세요",
             },
             })}/>
-            {errors.email && <AlertMessage>{errors.email.message}</AlertMessage>}
+            {errors.email?.type === "required" && <AlertMessage>이메일은 필수 입력입니다.</AlertMessage>}
+            {errors.email?.type === "pattern" && <AlertMessage>{errors.email.message}</AlertMessage>}
         </div>
         <div>
           <SubmitButton type='submit'>가입</SubmitButton>
@@ -139,6 +145,7 @@ const SubmitButton = styled.button`
 const AlertMessage = styled.span`
   display: block;
   margin-bottom: 10px;
+  font-size: 14px;
   color: #FF4646;
 `;
 export default Auth
