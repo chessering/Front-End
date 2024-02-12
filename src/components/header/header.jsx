@@ -3,7 +3,7 @@ import "../../index.css";
 import { Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-
+import { useNavigate } from 'react-router-dom';
 
 
 const resources = [
@@ -34,7 +34,20 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+  const navigate = useNavigate();
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleDownloadClick = () => {
+    navigate('/download');
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile/:userid');
+  };
+ 
   const [tab, setTab] = useState('vote');
 
   return (
@@ -44,13 +57,13 @@ export default function Header() {
           <div className="flex gap-7 space-x-4 items-center vote-tabs">
           <span className="ml-8 text-2xl font-bold text-black">DD</span>
             <button
-        className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'home' ? 'active border-b border-red-500' : ''}`}
+        className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'home' ? 'active border-b border-[#767676]' : ''}`}
         onClick={() => setTab('home')}
       >
         Home
         </button>
         <button
-        className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'about' ? 'active border-b border-red-500' : ''}`}
+        className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'about' ? 'active border-b border-[#767676]' : ''}`}
         onClick={() => setTab('about')}
       >
         about
@@ -115,7 +128,7 @@ export default function Header() {
               </Popover>
 
               <button
-        className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'help' ? 'active border-b border-red-500' : ''}`}
+        className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'help' ? 'active border-b border-[#767676]' : ''}`}
         onClick={() => setTab('help')}
       >
         도움말
@@ -134,8 +147,8 @@ export default function Header() {
             </form>
           </div>
           <div className="flex mr-5 gap-3 space-x-4 items-center">
-            <a href="#" className="text-lg font-medium text-gray-500 hover:text-gray-900">로그인</a>
-            <button type="button" className="border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">업로드</button>
+            <button onClick={handleLoginClick} className="text-lg font-medium text-gray-500 hover:text-gray-900">로그인</button>
+            <button onClick={handleDownloadClick} type="button" className="border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">업로드</button>
           </div>
         </div>
       </div>

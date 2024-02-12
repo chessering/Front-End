@@ -2,8 +2,8 @@ import React from 'react';
 import { Fragment } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Popover, Transition } from "@headlessui/react";
-
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { useNavigate } from 'react-router-dom';
 
 // 카테고리 드롭다운 
 const resources = [
@@ -33,18 +33,24 @@ function classNames(...classes) {
 }
 
 const images = [
-  { src: 'https://via.placeholder.com/150', alt: 'Image 1' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 2' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 3' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 4' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 5' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 6' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 7' },
-  { src: 'https://via.placeholder.com/150', alt: 'Image 8' },
-
+  { src: 'https://via.placeholder.com/300x200/CCCCCC/FFFFFF', alt: 'Image 1' },
+  { src: 'https://via.placeholder.com/300x200/BBBBBB/FFFFFF', alt: 'Image 2' },
+  { src: 'https://via.placeholder.com/300x200/AAAAAA/FFFFFF', alt: 'Image 3' },
+  { src: 'https://via.placeholder.com/300x200/999999/FFFFFF', alt: 'Image 4' },
+  { src: 'https://via.placeholder.com/300x200/888888/FFFFFF', alt: 'Image 5' },
+  { src: 'https://via.placeholder.com/300x200/777777/FFFFFF', alt: 'Image 6' },
+  { src: 'https://via.placeholder.com/300x200/666666/FFFFFF', alt: 'Image 7' },
+  { src: 'https://via.placeholder.com/300x200/555555/FFFFFF', alt: 'Image 8' },
 ];
 
+
 export default function Mainpage() {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate('/profile/:userid');
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mx-auto grid text-center">
@@ -139,7 +145,7 @@ export default function Mainpage() {
         <h2 className="text-2xl text-[#21272A] font-semibold">인기 바탕화면</h2>
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
           {images.map((image, index) => (
-            <div key={index} className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
+            <div key={index} className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200">
               <img src={image.src} alt={image.alt} className="object-cover object-center w-full h-full rounded-lg" />
             </div>
           ))}
@@ -147,11 +153,13 @@ export default function Mainpage() {
         
       </section>
       <section className="mt-8 mb-8">
-        <h2 className="text-2xl itwms-center text-[#21272A] font-semibold">인기 카테고리</h2>
+        <h2 className="text-2xl items-center mb-4 text-[#21272A] font-semibold">인기 카테고리</h2>
 
+        <h5 className='text-lg text-[#6B6B6B]'>카테고리 1
+        <button onClick={handleProfileClick}  type="button" className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">더보기</button>
+        </h5> 
+        <div className="flex mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
         
-        <div className="flex  mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
-          
           {images.map((image, index) => (
             <div key={index} className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
               <img src={image.src} alt={image.alt} className="object-cover object-center w-full h-full rounded-lg" />

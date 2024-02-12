@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import Auth from './pages/Login/Auth';
 import CompleteAuth from './pages/Login/CompleteAuth';
 import Layout from './components/layout';
+import Mainpage from "./pages/MainPage/mainpage"
 
 import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
@@ -18,6 +19,7 @@ function App() {
     <div>
       <Routes location={background || location}>
       <Route element={<Layout />}>
+        <Route path='/' element={<Mainpage/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/auth' element={<Auth/>}/>
         <Route path='/authcomplete' element={<CompleteAuth/>}/>
