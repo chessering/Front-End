@@ -9,7 +9,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({mode:"onChange"});
+  } = useForm();
 
   const navigate = useNavigate();
   const gotoAuth =() =>{
@@ -45,10 +45,10 @@ const Login = () => {
               pattern:{
                 value:
                 /^[A-Za-z0-9]{4,12}$/,
-                message: "영어 대소문자와 숫자를 혼합해 4-12글자로 구성해주세요."
+                message: "아이디 형식이 올바르지 않습니다."
               }
             })}/>
-            {errors.id?.type === "required" && <AlertMessage>아이디는 필수 입력입니다.</AlertMessage>}
+            {errors.id?.type === "required" && <AlertMessage>아이디를 입력해주세요.</AlertMessage>}
             {errors.id?.type === "pattern" && <AlertMessage>{errors.id.message}</AlertMessage>}
         </div>
         <div>
@@ -62,10 +62,10 @@ const Login = () => {
               pattern:{
                 value:
                 /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,}$/,
-                message: "비밀번호 형식이 맞지 않습니다.",
+                message: "비밀번호 형식이 올바르지 않습니다.",
               }
             })}/>
-            {errors.password?.type === "required" && <AlertMessage>비밀번호는 필수 입력입니다.</AlertMessage>}
+            {errors.password?.type === "required" && <AlertMessage>비밀번호를 입력해주세요.</AlertMessage>}
             {errors.password?.type === "pattern" && <AlertMessage>{errors.password.message}</AlertMessage>}
         </div>
         <div>
