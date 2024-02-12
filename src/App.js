@@ -10,6 +10,10 @@ import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
 import Modal from './components/Profile/Modal';
 
+import Myinfo from './pages/MyPage/Myinfo';
+import MyPosts from "./pages/MyPage/MyPosts";
+import MyInfoModify from "./pages/MyPage/MyInfoModify";
+
 
 function App() {
   const location = useLocation();
@@ -23,8 +27,9 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/auth' element={<Auth/>}/>
         <Route path='/authcomplete' element={<CompleteAuth/>}/>
-        <Route path='/download' element={<Download/>}/>
-        <Route path='/profile/:userid' element={<UserProfile/>}/>
+        <Route path='/myinfo' element={<Myinfo/>}/>
+        <Route path='/myinfomodify' element={<MyInfoModify/>}/>
+        <Route path='/myposts' element={<MyPosts/>}/>
       </Route>
       </Routes>
       {background && (
