@@ -13,6 +13,7 @@ import Modal from './components/Profile/Modal';
 import Myinfo from './pages/MyPage/Myinfo';
 import MyPosts from "./pages/MyPage/MyPosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path='/myinfo' element={<Myinfo/>}/>
         <Route path='/myinfomodify' element={<MyInfoModify/>}/>
         <Route path='/myposts' element={<MyPosts/>}/>
+        <Route path='/notfound' element={<NotFound/>}/>
       </Route>
       </Routes>
       {background && (

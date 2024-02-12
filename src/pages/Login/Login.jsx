@@ -86,7 +86,9 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 120px;
+  margin-bottom: 50px;
   color: #2f2f2f;
+  font-family: 'Pretendard Variable';
 `;
 const Title = styled.div`
   font-weight: 700;
