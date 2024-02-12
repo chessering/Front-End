@@ -1,15 +1,14 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './index.css';
-import Layout from './components/layout';
 import Login from "./pages/Login/Login";
 import Auth from './pages/Login/Auth';
 import CompleteAuth from './pages/Login/CompleteAuth';
+import Layout from './components/layout';
 
-import Download from './pages/Donwload';
-import UserProfile from './pages/UserProfile';
+import Download from './pages/UserPage/Donwload';
+import UserProfile from './pages/UserPage/UserProfile';
 import Modal from './components/Profile/Modal';
 
-import Mainpage from './pages/mainpage';
 
 function App() {
   const location = useLocation();
@@ -17,10 +16,14 @@ function App() {
 
   return (
     <div>
-      <Routes>
+      <Routes location={background || location}>
+      <Route element={<Layout />}>
         <Route path='/login' element={<Login/>}/>
         <Route path='/auth' element={<Auth/>}/>
         <Route path='/authcomplete' element={<CompleteAuth/>}/>
+        <Route path='/download' element={<Download/>}/>
+        <Route path='/profile/:userid' element={<UserProfile/>}/>
+      </Route>
       </Routes>
       {background && (
         <Routes>
