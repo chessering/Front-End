@@ -9,6 +9,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
   const navigate = useNavigate();
@@ -26,7 +27,22 @@ const Login = () => {
           console.log(res);
         })
         .catch((err)=>{
-          console.log(err);
+          console.log(err.response.status);
+          // console.log(err); 서버 배포되면 response body 보고 수정 필요함
+          switch(err.response.status){
+            case "MEMBER4006":
+              setError("password",{ type:'wrong password', message: '비밀번호가 틀립니다.'});
+              break;
+            case 403:
+              if(window.confirm("등록된 정보가 없습니다. 회원가입 하시겠습니까?")){
+                navigate('/auth');
+              }
+              break;
+            // case 404:
+            //   setError("password",{ type:'network error', message: '네트워크 에러'});
+            default:
+              break;
+          }
         })
   }
   return (
@@ -67,6 +83,7 @@ const Login = () => {
             })}/>
             {errors.password?.type === "required" && <AlertMessage>비밀번호를 입력해주세요.</AlertMessage>}
             {errors.password?.type === "pattern" && <AlertMessage>{errors.password.message}</AlertMessage>}
+            {errors.password?.type === "wrong password" && <AlertMessage>{errors.password.message}</AlertMessage>}
         </div>
         <div>
           <LoginButton type='submit'>로그인</LoginButton>
