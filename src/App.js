@@ -9,6 +9,7 @@ import Mainpage from "./pages/MainPage/mainpage"
 import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
 import Modal from './components/Profile/Modal';
+import Upload from './pages/Upload/Upload';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path='/authcomplete' element={<CompleteAuth/>}/>
         <Route path='/download' element={<Download/>}/>
         <Route path='/profile/:userid' element={<UserProfile/>}/>
+        <Route path='/upload' element={<Upload/>}/>
       </Route>
       </Routes>
       {background && (
