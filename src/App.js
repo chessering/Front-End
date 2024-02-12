@@ -9,6 +9,7 @@ import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
 import Modal from './components/Profile/Modal';
 
+import Myinfo from './pages/MyPage/Myinfo';
 import MyPosts from "./pages/MyPage/MyPosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 
@@ -25,6 +26,9 @@ function App() {
         <Route path='/auth' element={<Auth/>}/>
         <Route path='/authcomplete' element={<CompleteAuth/>}/>
         <Route path='/myinfo' element={<Myinfo/>}/>
+        <Route path='/myinfomodify' element={<MyInfoModify/>}/>
+        <Route path='/myposts' element={<MyPosts/>}/>
+      </Route>
       </Routes>
       {background && (
         <Routes>
