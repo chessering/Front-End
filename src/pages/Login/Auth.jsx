@@ -25,7 +25,20 @@ const Auth = () => {
             navigate('/authcomplete');
           })
           .catch((err)=>{
-            console.log(err);
+            console.log(err.response);
+            switch(err.response.status){
+              case 'MEMBER4003':
+                if(window.confirm("이미 존재하는 아이디입니다. 아이디를 다시 입력해주세요.")){
+                  window.location.reload();
+                }
+                break;
+              // case 404:
+              //   if(window.confirm("네트워크 에러")){
+              //     window.location.reload();
+              //   }
+              default:
+                break;
+            }
           })
     }
   return (
@@ -60,7 +73,7 @@ const Auth = () => {
               pattern:{
                 value:
                 /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,}$/,
-                message: "비밀번호 형식이 맞지 않습니다.",
+                message: "최소 1개의 영문자, 숫자, 특수문자(!@#$%^&*_-)로 구성해주세요.",
               }
             })}/>
             {errors.password?.type === "required" && <AlertMessage>비밀번호는 필수 입력입니다.</AlertMessage>}

@@ -25,10 +25,10 @@ const Login = () => {
         })
         .then((res)=>{
           console.log(res);
+          navigate('/');
         })
         .catch((err)=>{
-          console.log(err.response.status);
-          // console.log(err); 서버 배포되면 response body 보고 수정 필요함
+          console.log(err.response);
           switch(err.response.status){
             case "MEMBER4006":
               setError("password",{ type:'wrong password', message: '비밀번호가 틀립니다.'});
@@ -38,8 +38,10 @@ const Login = () => {
                 navigate('/auth');
               }
               break;
-            // case 404:
-            //   setError("password",{ type:'network error', message: '네트워크 에러'});
+            case 404:
+              if(window.confirm("네트워크 에러")){
+                window.location.reload();
+              }
             default:
               break;
           }
