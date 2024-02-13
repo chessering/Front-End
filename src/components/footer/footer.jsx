@@ -1,6 +1,6 @@
 import React from 'react';
 import "../../index.css";
-import { ReactComponent as FooterLogo } from '../../assets/images/footerlogo.svg';
+import FooterLogo from "../../assets/images/headerlogo.svg"
 
 
 const navigation = {
@@ -79,7 +79,10 @@ export default function Footer() {
         <nav className="flex justify-between items-center sm:space-x-12" aria-label="Footer">
           {/* 왼쪽 요소 */}
           <div className="flex items-center">
-            <span className="text-2xl font-bold text-white">DD</span>
+          <div className="ml-8 flex items-center justify-center min-w-[100px] h-[100px]">
+          
+          <img src={FooterLogo} alt="Logo" className="w-auto h-auto" />
+        </div>
           </div>
           {/* 중앙 요소 */}
           <div className="hidden gap-9 sm:flex flex-row items-center">

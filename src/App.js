@@ -11,6 +11,10 @@ import UserProfile from './pages/UserPage/UserProfile';
 import Modal from './components/Profile/Modal';
 import Upload from './pages/Upload/Upload';
 
+import Myinfo from './pages/MyPage/Myinfo';
+import MyPosts from "./pages/MyPage/MyPosts";
+import MyInfoModify from "./pages/MyPage/MyInfoModify";
+
 
 function App() {
   const location = useLocation();
@@ -19,15 +23,18 @@ function App() {
   return (
     <div>
       <Routes location={background || location}>
-      <Route element={<Layout />}>
-        <Route path='/' element={<Mainpage/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/auth' element={<Auth/>}/>
-        <Route path='/authcomplete' element={<CompleteAuth/>}/>
-        <Route path='/download' element={<Download/>}/>
-        <Route path='/profile/:userid' element={<UserProfile/>}/>
-        <Route path='/upload' element={<Upload/>}/>
-      </Route>
+        <Route element={<Layout />}>
+          <Route path='/' element={<Mainpage/>}/>
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/auth' element={<Auth/>}/>
+          <Route path='/authcomplete' element={<CompleteAuth/>}/>
+          <Route path='/download' element={<Download/>}/>
+          <Route path='/profile/:userid' element={<UserProfile/>}/>
+          <Route path='/upload' element={<Upload/>}/>
+          <Route path='/myinfo' element={<Myinfo/>}/>
+          <Route path='/myinfomodify' element={<MyInfoModify/>}/>
+          <Route path='/myposts' element={<MyPosts/>}/>
+        </Route>
       </Routes>
       {background && (
         <Routes>
