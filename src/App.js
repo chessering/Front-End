@@ -13,7 +13,9 @@ import Upload from './pages/Upload/Upload';
 
 import Myinfo from './pages/MyPage/Myinfo';
 import MyPosts from "./pages/MyPage/MyPosts";
+import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
           <Route path='/myinfo' element={<Myinfo/>}/>
           <Route path='/myinfomodify' element={<MyInfoModify/>}/>
           <Route path='/myposts' element={<MyPosts/>}/>
+          <Route path='/likeposts' element={<LikePosts/>}/>
+
         </Route>
       </Routes>
       {background && (

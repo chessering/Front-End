@@ -24,8 +24,10 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 238px;
+    margin-top: 148px;
+    margin-bottom: 50px;
     color: #2f2f2f;
+    font-family: 'Pretendard Variable';
 `;
 const Text1 = styled.div`
     font-weight: 700;
