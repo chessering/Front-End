@@ -11,7 +11,7 @@ const MyImage = styled.img`
 
 const Container1 = styled.div`
     width: 662px;
-    height: 49px;
+    height: 39px;
     background: #F2F1F1;
     border-radius: 7px;
     margin-bottom: 18px;
@@ -24,13 +24,14 @@ const Container2 = styled.div`
     background: #F2F1F1;
     border-radius: 7px;
     padding: 3px;
+    margin-bottom : 38px;
 `
 
 function Myinfo() {
     return(
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
             <MyLists/>
-            <div className="flex w-9/12 float-left ml-52">
+            <div className="flex w-9/12 float-left ml-96">
                 <div className="flex mb-4 justify-center flex-col mr-20 ">
                     <div className="text-5xl mb-16 font-bold whitespace-nowrap">나의 정보</div>
                     <div className="flex flex-col items-center">
