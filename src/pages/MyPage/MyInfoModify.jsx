@@ -73,7 +73,8 @@ function MyInfoModify() {
     const onSubmit = (e) => {
         Swal.fire({
             icon : "success",
-            title : "정보 수정이 완료되었습니다!"
+            title : "Draw Desktop",
+            text : "정보 수정이 완료되었습니다."
         }).then(() => {
             navigate("/myinfo");
         })
