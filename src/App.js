@@ -15,6 +15,7 @@ import Myinfo from './pages/MyPage/Myinfo';
 import MyPosts from "./pages/MyPage/MyPosts";
 import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
+import NotFound from './pages/NotFound';
 
 
 function App() {
