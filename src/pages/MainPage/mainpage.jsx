@@ -48,7 +48,7 @@ export default function Mainpage() {
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
-    navigate('/profile/:userid');
+    navigate('/more');
   };
   const handleDownloadClick = () => {
     navigate('/download');
