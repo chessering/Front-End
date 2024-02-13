@@ -41,8 +41,10 @@ export default function Header() {
     navigate('/login');
   };
 
-  const handleDownloadClick = () => {
-    navigate('/download');
+
+
+  const handleMainClick = () => {
+    navigate('/');
   };
   const [tab, setTab] = useState('vote');
 
@@ -53,11 +55,11 @@ export default function Header() {
           <div className="flex gap-7 space-x-4 items-center vote-tabs">
           <div className="ml-8 flex items-center justify-center min-w-[100px] h-[100px]">
           
-          <img src={HeaderLogo} alt="Logo" className="w-auto h-auto" />
+          <img src={HeaderLogo} alt="Logo"  className="w-auto h-auto" />
         </div>
             <button
               className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'home' ? 'active border-b border-[#767676]' : ''}`}
-              onClick={() => setTab('home')}
+              onClick={handleMainClick} 
             >
               Home
             </button>
@@ -148,7 +150,7 @@ export default function Header() {
           </div>
           <div className="flex mr-5 gap-3 space-x-4 items-center">
             <button onClick={handleLoginClick} className="text-lg font-medium text-gray-500 hover:text-gray-900">로그인</button>
-            <button onClick={handleDownloadClick} type="button" className="border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">업로드</button>
+            <button  type="button" className="border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">업로드</button>
           </div>
         </div>
       </div>
