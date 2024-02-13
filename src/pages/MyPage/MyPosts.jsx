@@ -17,8 +17,9 @@ const StyledList = styled.div`
     color : black;
     vertical-align: middle;
     gap : 0 20px;
-    height: 49px;
+    height: 39px;
     width : 100%;
+    text-wrap : nowrap;
 `
 
 
@@ -48,15 +49,15 @@ function MyPosts() {
 
     return(
 
-        <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
+        <div className="flex flex-col justify-center items-center w-12/12 h-4/6 mb-96 text-nowrap">
             <MyLists/>
             <div className="flex flex-row mt-12 w-8/12 ml-28">
                 <div className="text-5xl mb-16 font-bold whitespace-nowrap text-left mr-96">마이 게시물</div>
                 <StyledButton>수정</StyledButton>
             </div>
             <div className="flex w-7/12 flex-col">
-                <div className="flex flex-row align-middle justify-between w-12/12 mb-8">
-                    <div className="mr-28 ml-6">Post ID</div>
+                <div className="flex flex-row align-middle justify-between w-12/12 mb-2">
+                    <div className="mr-32 ml-8">Post ID</div>
                     <div className="mr-40">제목</div>
                     <div className="mr-32">작성자</div>
                     <div className="mr-32">작성일</div>
