@@ -50,7 +50,9 @@ export default function Mainpage() {
   const handleProfileClick = () => {
     navigate('/profile/:userid');
   };
-
+  const handleDownloadClick = () => {
+    navigate('/download');
+  };
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mx-auto grid text-center">
@@ -89,22 +91,22 @@ export default function Mainpage() {
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y-1"
                           >
-                            <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 transform px-2 sm:px-0">
+                            <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-48 -translate-x-1/2 transform px-2 sm:px-0">
                               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                                <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                                <div className="relative grid gap-6 bg-white px-3 py-6 sm:gap-8 sm:p-8">
                                   {resources.map((item) => (
-                                    <a
-                                      key={item.name}
-                                      href={item.href}
-                                      className="-m-3 block rounded-md p-3 hover:bg-gray-50"
-                                    >
+                                    // <a
+                                    //   key={item.name}
+                                    //   href={item.href}
+                                    //   className="-m-3 block rounded-md p-3 hover:bg-gray-50"
+                                    // >
                                       <p className="text-base font-medium text-gray-900">
                                         {item.name}
                                       </p>
-                                      <p className="mt-1 text-sm text-gray-500">
-                                        {item.description}
-                                      </p>
-                                    </a>
+                                      // <p className="mt-1 text-sm text-gray-500">
+                                      //   {item.description}
+                                      // </p>
+                                    // </a>
                                   ))}
                                 </div>
                               </div>
@@ -146,7 +148,7 @@ export default function Mainpage() {
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
           {images.map((image, index) => (
             <div key={index} className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200">
-              <img src={image.src} alt={image.alt} className="object-cover object-center w-full h-full rounded-lg" />
+              <img src={image.src} alt={image.alt} onClick={handleDownloadClick} className="object-cover object-center w-full h-full rounded-lg" />
             </div>
           ))}
         </div>
