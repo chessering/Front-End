@@ -40,9 +40,9 @@ export default function Header() {
   const handleLoginClick = () => {
     navigate('/login');
   };
-
-
-
+  const handleUploadClick = () => {
+    navigate('/upload');
+  };
   const handleMainClick = () => {
     navigate('/');
   };
@@ -150,7 +150,7 @@ export default function Header() {
           </div>
           <div className="flex mr-5 gap-3 space-x-4 items-center">
             <button onClick={handleLoginClick} className="text-lg font-medium text-gray-500 hover:text-gray-900">로그인</button>
-            <button  type="button" className="border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">업로드</button>
+            <button onClick={handleUploadClick}  type="button" className="border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">업로드</button>
           </div>
         </div>
       </div>
