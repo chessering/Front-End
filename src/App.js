@@ -5,6 +5,7 @@ import Auth from './pages/Login/Auth';
 import CompleteAuth from './pages/Login/CompleteAuth';
 import Layout from './components/layout';
 import Mainpage from "./pages/MainPage/mainpage"
+import Morepage from "./pages/MainPage/more_page";
 
 import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
@@ -27,6 +28,7 @@ function App() {
       <Routes location={background || location}>
         <Route element={<Layout />}>
           <Route path='/' element={<Mainpage/>}/>
+          <Route path='/more' element={<Morepage/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/auth' element={<Auth/>}/>
           <Route path='/authcomplete' element={<CompleteAuth/>}/>
