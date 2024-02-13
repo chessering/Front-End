@@ -36,6 +36,7 @@ const Container2 = styled.input`
     white-space: normal;
     vertical-align : 100%;
     line-height : 60px;
+    margin-bottom : 30px;
 `
 const StyledButton = styled.button`
     background : blue;
@@ -49,6 +50,7 @@ const StyledButton = styled.button`
     font-weight : 500;
     line-height : 18px;
     font-size : 16px;
+    margin-bottom : 30px;
 `
 
 
@@ -81,7 +83,7 @@ function MyInfoModify() {
     } 
 
     return (
-        <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
+        <div className="flex flex-col justify-center items-center w-12/12 h-4/6 mx-auto">
             <MyLists/>
             <div className="flex w-9/12 float-left ml-52">
                 <div className="flex mb-4 justify-center flex-col mr-20 ">

@@ -1,6 +1,6 @@
 import React from 'react';
-import MyLists from "./MyLists";
-import styled from 'styled-components';
+import MyLists from "./MyLists.jsx";
+import styled from "styled-components";
 
 const StyledButton = styled.button`
     background : blue;
@@ -9,7 +9,7 @@ const StyledButton = styled.button`
     border-radius : 7px;
     width : 93px;
     height : 42px;
-    margin-left : 350px;
+    margin-left : 200px;
 `
 
 const StyledList = styled.div`
@@ -22,8 +22,8 @@ const StyledList = styled.div`
     text-wrap : nowrap;
 `
 
+function LikePosts() {
 
-function MyPosts() {
     const dummyposts=[
         {postId : 1, title : 2, author : 33, date : 11, like : 44},
         {postId : 1, title : 3, author : 33, date : 11, like : 44},
@@ -52,7 +52,7 @@ function MyPosts() {
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6 mb-96 text-nowrap">
             <MyLists/>
             <div className="flex flex-row mt-12 w-8/12 ml-40">
-                <div className="text-5xl mb-16 font-bold whitespace-nowrap text-left mr-96">마이 게시물</div>
+                <div className="text-5xl mb-16 font-bold whitespace-nowrap text-left mr-96">좋아요 누른 게시물</div>
                 <StyledButton>수정</StyledButton>
             </div>
             <div className="flex w-7/12 flex-col">
@@ -69,6 +69,7 @@ function MyPosts() {
             </div>
         </div>
     );
+
 }
 
-export default MyPosts;
+export default LikePosts;
