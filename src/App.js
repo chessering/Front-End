@@ -30,7 +30,7 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/auth' element={<Auth/>}/>
           <Route path='/authcomplete' element={<CompleteAuth/>}/>
-          <Route path='/download' element={<Download/>}/>
+          <Route path='/download/:postid' element={<Download/>}/>
           <Route path='/profile/:userid' element={<UserProfile/>}/>
           <Route path='/upload' element={<Upload/>}/>
           <Route path='/myinfo' element={<Myinfo/>}/>

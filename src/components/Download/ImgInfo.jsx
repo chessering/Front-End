@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import { ProfileBox, ProfileWrap } from '../Profile/UserInfo'
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function ImgInfo() {
+export default function ImgInfo( { postid }) {
   const [isMore, setIsMore]= useState(false);
   const textLimit = useRef(60);
-  const { postid } = useParams();
   const navigate = useNavigate();
   
   /* 이미지 정보 가져오기

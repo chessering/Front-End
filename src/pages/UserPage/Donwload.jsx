@@ -3,11 +3,15 @@ import styled from 'styled-components'
 import ImgInfo from '../../components/Download/ImgInfo'
 import Photos from '../../components/Profile/Photos'
 import Pagination from '../../components/Profile/Pagination'
+import { useParams } from 'react-router-dom'
 
 export default function Donwload() {
+  
+  const { postid } = useParams();
+
   return (
     <DownloadWrap>
-        <ImgInfo></ImgInfo>
+        <ImgInfo postid={postid}></ImgInfo>
         <More>더 보기</More>
         <Photos></Photos>
         <Pagination></Pagination>
