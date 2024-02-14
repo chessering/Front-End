@@ -16,9 +16,10 @@ export default function Donwload() {
 }
 
 const DownloadWrap = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 154px;
 `
 
 const More = styled.div`

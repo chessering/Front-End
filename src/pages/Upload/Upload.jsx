@@ -158,12 +158,6 @@ export default function Upload() {
               </Label>
             </Others>
             <Submit type='submit'>제출</Submit>
-            {errors.img_url && <div>{errors.img_url.message}</div>}
-            {errors.category && <div>cat에러</div>}
-            {errors.title && <div>title에러</div>}
-            {errors.description && <div>desc에러</div>}
-            {errors.link && <div>link에러</div>}
-            {errors.tag && <div>tag에러</div>}
           </RightContainer>
         </UploadForm>
       </Container>

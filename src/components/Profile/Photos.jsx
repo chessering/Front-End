@@ -21,8 +21,7 @@ const PhotoContainer = styled.div`
   margin-top: 40px;
   margin-bottom: 40px;
   flex-wrap: wrap;
-  width: 1160px;
-  height: 840px;
+  width: 1200px;
   justify-content: space-between;
   align-content: space-between;
 `
@@ -30,4 +29,5 @@ const PhotoContainer = styled.div`
 const Photo = styled.img`
   width: 282px;
   height: 192px;
+  margin-bottom: 23px;
 `
