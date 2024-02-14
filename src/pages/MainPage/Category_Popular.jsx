@@ -5,8 +5,8 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from 'react-router-dom';
 
-// 카테고리 드롭다운 
-
+ 
+// 카테고리 인기 페이지
 
 const images = [
     { src: 'https://via.placeholder.com/300x200/CCCCCC/FFFFFF', alt: 'Image 1' },
@@ -24,7 +24,7 @@ const images = [
 ];
 
 
-export default function Morepage() {
+export default function Category_Popular() {
     const navigate = useNavigate();
 
     return (
@@ -32,7 +32,7 @@ export default function Morepage() {
             <div className="mx-auto grid text-left">
                 <section className="mt-8 mb-8">
                     <div className="flex items-center">
-                        <span className="text-2xl text-[#21272A] font-semibold mr-4">카테고리
+                        <span className="text-2xl text-[#21272A] font-semibold mr-4">인기 카테고리
                         <span className="ml-4 text-lg text-[#6B6B6B]">최근글수/전체글수</span></span>
                         
                     </div>
