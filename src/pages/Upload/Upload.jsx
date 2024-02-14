@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import axios from 'axios'
 import { ReactComponent as UploadIcon } from "../../assets/images/icon_Image Upload.svg"
 
@@ -60,9 +60,60 @@ export default function Upload() {
     })
   }, [])
 
+  const [inputHashTag, setInputHashTag] = useState('');
+  const [hashTags, setHashTags] = useState([]);
+
+
+  const addHashTag = (e) => {
+    const allowedCommand = ['Comma', 'Enter', 'Space', 'NumpadEnter'];
+    if (!allowedCommand.includes(e.code)) return;
+
+    if (isEmptyValue(e.target.value.trim())) {
+      return setInputHashTag('')
+    }
+
+    let newHashTag = e.target.value.trim();
+    const regExp = /[\{\}\[\]\/?.;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    if (regExp.test(newHashTag)) {
+      newHashTag = newHashTag.replace(regExp, '');
+    }
+    if (newHashTag.includes(',')) {
+      newHashTag = newHashTag.split(',').join('');
+    }
+
+    if (isEmptyValue(newHashTag)) return;
+
+    setHashTags((prevHashTags) => {
+      return [...new Set([...prevHashTags, newHashTag])];
+    });
+
+    setInputHashTag('');
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.code !== 'Enter' && e.code !== 'NumpadEnter') return;
+    e.preventDefault();
+  
+    const regExp = /^[a-z|A-Z|가-힣|ㄱ-ㅎ|ㅏ-ㅣ|0-9| \t|]+$/g;
+    if (!regExp.test(e.target.value)) {
+      setInputHashTag('');
+    }
+  };
+  
+  const changeHashTagInput = (e) => {
+    setInputHashTag(e.target.value);
+  };
+
+  const isEmptyValue = (value) => {
+    if (!value.length) {
+      return true;
+    }
+    return false;
+  }
 
   const {
     register,
+    control,
     setValue,
     setError,
     clearErrors,
@@ -70,6 +121,11 @@ export default function Upload() {
     formState: { errors },
     watch,
   } = useForm({mode:"onChange"});
+
+  const { fields, append, remove } = useFieldArray({
+    name: "tags",
+    control: control
+  })
 
   const onSubmit = (data) => {
     console.log(data);
@@ -117,6 +173,11 @@ export default function Upload() {
               e.preventDefault();
               imageInput.current.click();
             }}>찾아보기</Browse>
+            <Errors>
+              {errors.img_url && (<div>{errors.img_url.message}</div>)}
+              {errors.category?.type === 'required' && (<div>카테고리는 필수 정보입니다.</div>)}
+              {errors.title?.type === 'required' && (<div>제목은 필수 정보입니다.</div>)}
+            </Errors>
           </LeftContainer>
           <RightContainer>
             <Others>
@@ -124,7 +185,7 @@ export default function Upload() {
                 카테고리
                 <Input id='category' 
                   {...register('category',{
-                    required: true,
+                    required: true
                   })}/>
               </Label>
               <Label>
@@ -137,24 +198,36 @@ export default function Upload() {
               <Label>
                 설명
                 <Input id='description' 
-                  {...register('description', {
-                    required: true,
-                  })}/>
+                  {...register('description')}/>
               </Label>
               <Label>
                 관련링크
                 <Input id='link' 
-                  {...register('link', {
-                    required: true,
-                  })}/>
+                  {...register('link')}/>
               </Label>
               <Label>
-                태그 n개
-                <Input id='tags' 
-                  {...register('tag', {
-                    required: true,
-                  })
-                }/>
+                태그
+                <TagsWrap>
+                  {hashTags.length > 0 && (
+                    <TagContainer>
+                      {hashTags.map((hashTag) => {
+                        return (
+                          <Tag key={hashTag} className='tag'>
+                            #{hashTag}
+                          </Tag>
+                      );
+                      })}
+                    </TagContainer>)
+                  }
+                  <InputTag
+                    value={inputHashTag}
+                    onChange={changeHashTagInput}
+                    onKeyUp={addHashTag}
+                    onKeyDown={handleKeyDown}
+
+                    placeholder='#해시태그를 등록해보세요. (최대 30개)'
+                  />
+                </TagsWrap>
               </Label>
             </Others>
             <Submit type='submit'>제출</Submit>
@@ -167,15 +240,16 @@ export default function Upload() {
 
 const UploadWrap = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `
 
 const Container = styled.div`
   width: 1200px;
-  height: 690px;
 
   display: flex;
+  flex-basis: 690px;
   flex-direction: column;
   justify-content: space-between;
 
@@ -198,17 +272,17 @@ const Title = styled.div`
 
 const UploadForm = styled.form`
   width: 1200px;
-  height: 569px;
+  
   display: flex;
+  flex-basis: 569px;
   justify-content: space-between;
 `
 
 const LeftContainer = styled.div`
-  height: 442px;
+  height: 569px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 `
 
@@ -252,13 +326,21 @@ const Preview = styled.img`
   height: 364px;
 `
 
-const RightContainer = styled.div`
-  width: 486px;
-  height: 569px;
+const Errors = styled.div`
+  height: 127px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+
+  color: #FF4646;
+`
+
+const RightContainer = styled.div`
+  width: 486px;
+
+  display: flex;
+  flex-direction: column;
 `
 
 const Drop = styled.div`
@@ -302,6 +384,7 @@ const ImageInput = styled.input`
 const Browse = styled.button`
   width: 141px;
   height: 42px;
+  margin-top: 36px;
 
   background: #0F62FE;
   border-radius: 7px;
@@ -317,17 +400,15 @@ const Browse = styled.button`
 
 const Others = styled.div`
   width: 486px;
-  height: 491px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `
 
 const Label = styled.label`
   width: 486px;
-  height: 79px;
-
+  margin-bottom: 24px;
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -346,6 +427,7 @@ const Label = styled.label`
 const Input = styled.input`
   width: 486px;
   height: 49px;
+  margin-top: 12px;
   padding-left: 10px;
 
   background: #F2F1F1;
@@ -363,5 +445,40 @@ const Submit = styled.button`
 
   color: #FFFFFF;
   cursor: pointer;
+`
 
+const TagsWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  background: #F2F1F1;
+  border-radius: 7px;
+`
+const TagContainer = styled.div`
+  width: 486px;
+  padding-left: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  background: #F2F1F1;
+  border-radius: 7px;
+`
+
+const Tag = styled.div`
+  margin: 3px;
+  padding: 3px;
+
+  display: flex;
+  flex: 0 auto;
+  align-items: center;
+
+  background: #FFFFFF;
+  border-radius: 7px;
+
+  color: #6B6B6B
+`
+
+const InputTag = styled(Input)`
+  margin-top: 0px;
 `
