@@ -17,6 +17,7 @@ import MyPosts from "./pages/MyPage/MyPosts";
 import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
+import HelpDesk from './pages/HelpDesk';
 
 
 function App() {
@@ -39,7 +40,8 @@ function App() {
           <Route path='/myinfomodify' element={<MyInfoModify/>}/>
           <Route path='/myposts' element={<MyPosts/>}/>
           <Route path='/likeposts' element={<LikePosts/>}/>
-
+          <Route path='/notfound' element={<NotFound/>}/>
+          <Route path='/helpdesk' element={<HelpDesk/>}/>
         </Route>
       </Routes>
       {background && (
