@@ -47,12 +47,19 @@ const images = [
 export default function Mainpage() {
   const navigate = useNavigate();
 
-  const handleProfileClick = () => {
-    navigate('/more');
+
+
+  const handlePopularClick = () => {
+    navigate('/Popular');
   };
-  const handleDownloadClick = () => {
-    navigate('/download');
+  const handleCategoryPopularClick = () => {
+    navigate('/Category_Popular');
   };
+  const handleCategorClick = () => {
+    navigate('/Categor');
+  };
+
+  // onClick={handleProfileClick} 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mx-auto grid text-center">
@@ -144,21 +151,21 @@ export default function Mainpage() {
       </div>
       {/* 인기 바탕화면 */}
       <section className="mt-8 mb-8">
-        <h2 className="text-2xl text-[#21272A] font-semibold">인기 바탕화면</h2>
+        <h2 onClick={handlePopularClick}  className="text-2xl text-[#21272A] font-semibold">인기 바탕화면</h2>
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
           {images.map((image, index) => (
             <div key={index} className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200">
-              <img src={image.src} alt={image.alt} onClick={handleDownloadClick} className="object-cover object-center w-full h-full rounded-lg" />
+              <img src={image.src} alt={image.alt} className="object-cover object-center w-full h-full rounded-lg" />
             </div>
           ))}
         </div>
         
       </section>
       <section className="mt-8 mb-8">
-        <h2 className="text-2xl items-center mb-4 text-[#21272A] font-semibold">인기 카테고리</h2>
+        <h2 onClick={handleCategoryPopularClick}  className="text-2xl items-center mb-4 text-[#21272A] font-semibold">인기 카테고리</h2>
 
-        <h5 className='text-lg text-[#6B6B6B]'>카테고리 1
-        <button onClick={handleProfileClick}  type="button" className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">더보기</button>
+        <h5 onClick={handleCategorClick}  className='text-lg text-[#6B6B6B]'>카테고리 1
+        <button  type="button" className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">더보기</button>
         </h5> 
         <div className="flex mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
         

@@ -4,8 +4,11 @@ import Login from "./pages/Login/Login";
 import Auth from './pages/Login/Auth';
 import CompleteAuth from './pages/Login/CompleteAuth';
 import Layout from './components/layout';
+
 import Mainpage from "./pages/MainPage/mainpage"
-import Morepage from "./pages/MainPage/more_page";
+import Popular from "./pages/MainPage/Popular";  // 인기 바탕화면
+import Category from "./pages/MainPage/Category"; //카테고리
+import Category_Popular from "./pages/MainPage/Category_Popular"; //인기 카테고리
 
 import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
@@ -18,6 +21,7 @@ import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
+// 수정: 로그인  / 라우팅 > mainpage /mainpage 로 라우팅 수정
 
 
 function App() {
@@ -28,8 +32,13 @@ function App() {
     <div>
       <Routes location={background || location}>
         <Route element={<Layout />}>
-          <Route path='/' element={<Mainpage/>}/>
-          <Route path='/more' element={<Morepage/>}/>
+          {/* <Route path='/' element={<Mainpage/>}/> */}
+
+          <Route path='/main' element={<Mainpage/>}/>
+          <Route path='/Category' element={<Category/>}/>
+          <Route path='/Popular' element={<Popular/>}/>
+          <Route path='/Category_Popular' element={<Category_Popular/>}/>
+
           <Route path='/login' element={<Login/>}/>
           <Route path='/auth' element={<Auth/>}/>
           <Route path='/authcomplete' element={<CompleteAuth/>}/>
