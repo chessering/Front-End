@@ -33,7 +33,7 @@ export default function Upload() {
       setError('img_url',{
         message: "이미지 파일을 첨부해주세요."
       },{
-        shouldFocus: true
+        shouldFocus: false
       })
     }
   }
@@ -46,7 +46,7 @@ export default function Upload() {
       setError('img_url',{
         message: "사진을 첨부해주세요."
       },{
-        shouldFocus: true
+        shouldFocus: false
       })
     }
   }
@@ -56,13 +56,11 @@ export default function Upload() {
     setError('img_url',{
       message: "사진을 첨부해주세요."
     },{
-      shouldFocus: true
+      shouldFocus: false
     })
   }, [])
 
   const [inputHashTag, setInputHashTag] = useState('');
-  const [hashTags, setHashTags] = useState([]);
-
 
   const addHashTag = (e) => {
     const allowedCommand = ['Comma', 'Enter', 'Space', 'NumpadEnter'];
@@ -82,10 +80,8 @@ export default function Upload() {
     }
 
     if (isEmptyValue(newHashTag)) return;
-
-    setHashTags((prevHashTags) => {
-      return [...new Set([...prevHashTags, newHashTag])];
-    });
+    if (!fields.some(field => field.tag === newHashTag) && fields.length < 30)
+      append({ tag: `${newHashTag}` });
 
     setInputHashTag('');
   };
@@ -122,7 +118,7 @@ export default function Upload() {
     watch,
   } = useForm({mode:"onChange"});
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     name: "tags",
     control: control
   })
@@ -147,14 +143,14 @@ export default function Upload() {
     <UploadWrap>
       <Container>
         <Title>업로드</Title>
-        <UploadForm onSubmit={handleSubmit(onSubmit)}>
+        <UploadForm onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => console.log('Form KeyDown')}>
           <LeftContainer>
             <ImageLabel ref={imageInput} isdrag={isDrag}
               onDragEnter={handleDragStart}
               onDragOver={handleDragOver}
               onDragLeave={handleDragEnd}
               onDrop={handleDrop}>
-              <ImageInput id='img_url' type='file' accept='image/*'  onChange={handleChangeImg}/>
+              <ImageInput id='img_url' type='file' accept='image/*'  onChange={handleChangeImg} />
               {watch('img_url') ? (<Preview src={watch('img_url')} alt='upload'></Preview>) : 
               (<GuideWrap>
                 <GuideContainer>
@@ -208,12 +204,12 @@ export default function Upload() {
               <Label>
                 태그
                 <TagsWrap>
-                  {hashTags.length > 0 && (
+                  {fields.length > 0 && (
                     <TagContainer>
-                      {hashTags.map((hashTag) => {
+                      {fields.map((item, index) => {
                         return (
-                          <Tag key={hashTag} className='tag'>
-                            #{hashTag}
+                          <Tag key={item.tag}>
+                            #{`${item.tag}`}
                           </Tag>
                       );
                       })}
@@ -259,7 +255,7 @@ const Container = styled.div`
 
 const Title = styled.div`
   width: 104px;
-  height: 44px;
+  height: 121px;
 
   font-family: 'Pretendard Variable';
   font-style: normal;
@@ -456,6 +452,7 @@ const TagsWrap = styled.div`
 `
 const TagContainer = styled.div`
   width: 486px;
+  padding-top: 5px;
   padding-left: 10px;
 
   display: flex;
