@@ -21,12 +21,9 @@ import HelpDesk from './pages/HelpDesk';
 
 
 function App() {
-  const location = useLocation();
-  const background = location.state && location.state.background;
-
   return (
     <div>
-      <Routes location={background || location}>
+      <Routes>
         <Route element={<Layout />}>
           <Route path='/' element={<Mainpage/>}/>
           <Route path='/more' element={<Morepage/>}/>
@@ -44,12 +41,6 @@ function App() {
           <Route path='/helpdesk' element={<HelpDesk/>}/>
         </Route>
       </Routes>
-      {background && (
-        <Routes>
-          <Route path='/profile/:userid/followers' element={<Modal title='팔로워'/>}/>
-          <Route path='/profile/:userid/following' element={<Modal title='팔로잉'/>}/>
-        </Routes>
-      )}
     </div>
   );
 }

@@ -31,20 +31,6 @@ export default function UserInfo( { userid, location} ) {
               <CountHeader>게시물</CountHeader>
               <CountBody>{posts.toLocaleString("ko-KR")}</CountBody>
             </CountWrap>
-            <Link to={`/profile/${userid}/followers`} state={{background: location}}>
-              <CountWrap style={{'cursor': 'pointer'}}>
-                <CountHeader>팔로워</CountHeader>
-                <CountBody>1,702</CountBody>
-                <Outlet/>
-              </CountWrap>
-            </Link>
-            <Link to={`/profile/${userid}/following`} state={{background: location}}>
-              <CountWrap style={{'cursor': 'pointer'}}>
-                <CountHeader>팔로잉</CountHeader>
-                <CountBody>609</CountBody>
-                <Outlet/>
-              </CountWrap>
-            </Link>
           </CountList>
           <ProfileBio>{bio}</ProfileBio>
         </UserInfoWrap>
