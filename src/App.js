@@ -36,7 +36,7 @@ function App() {
           <Route path='/Popular' element={<Popular/>}/>
           <Route path='/Category_Popular' element={<Category_Popular/>}/>
 
-          <Route path='/login' element={<Login/>}/>
+          <Route path='/' element={<Login/>}/>
           <Route path='/auth' element={<Auth/>}/>
           <Route path='/authcomplete' element={<CompleteAuth/>}/>
           <Route path='/download/:postid' element={<Download/>}/>
