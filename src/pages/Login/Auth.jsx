@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
@@ -10,14 +10,48 @@ const Auth = () => {
         handleSubmit,
         formState: { errors },
         getValues,
+        watch,
+        setError,
       } = useForm({mode:"onChange"});
+
     const navigate = useNavigate();
+
+    const [nickNameCheck, setNickNameCheck] = useState(false);
+
+    const checknickname = async(e) =>{
+      e.preventDefault();
+      console.log(watch('nickname'));
+      if(watch('nickname')===""){
+        setError('nickname',{message:"닉네임은 필수 입력입니다."});
+        return;
+      }
+      try{
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/nick_name`,{
+          params:{
+            nickname : watch('nickname')
+          }
+        });
+        console.log(res);
+        alert("사용 가능한 닉네임입니다.");
+        setNickNameCheck(true);
+      }
+      catch(err){
+        setNickNameCheck(false);
+        console.log(err);
+      }
+    }
     const onSubmit =(data) =>{
         console.log(data);
+        if(nickNameCheck === false){
+          alert("닉네임 중복 체크를 해주세요");
+          return;
+      }
         axios
-          .post(`${""}/api/auth/join`,{
+          .post(`${process.env.REACT_APP_API_URL}/auth/join`,{
             login_id : data.id,
             password : data.pw,
+            nickname : data.nickname,
+            name : data.name,
             email : data.email,
           })
           .then((res)=>{
@@ -25,7 +59,7 @@ const Auth = () => {
             navigate('/authcomplete');
           })
           .catch((err)=>{
-            console.log(err.response);
+            console.log(err);
             switch(err.response.status){
               case 'MEMBER4003':
                 if(window.confirm("이미 존재하는 아이디입니다. 아이디를 다시 입력해주세요.")){
@@ -98,7 +132,36 @@ const Auth = () => {
             {errors.passwordCheck && <AlertMessage>{errors.passwordCheck.message}</AlertMessage>}
         </div>
         <div>
-          <label htmlFor='username'>이메일</label>
+          <label htmlFor='usernicknme'>닉네임</label>
+          <DoubleCheck>
+            <Input
+              id='nickname'
+              type='text'
+              placeholder='닉네임'
+              {...register("nickname",{
+                required: true,
+                minLength : { value: 2, message: '닉네임은 1자 이상이어야 합니다.' },
+              })}/>
+              {errors.nickname?.type === "required" && <AlertMessage>닉네임은 필수 입력입니다.</AlertMessage>}
+              {nickNameCheck && errors.nickname && <AlertMessage>{errors.nickname.message}</AlertMessage>}
+            <button onClick={checknickname}>중복 확인</button>
+          </DoubleCheck>
+        </div>
+        <div>
+          <label htmlFor='username'>이름</label>
+          <Input
+            id='name'
+            type='text'
+            placeholder='이름'
+            {...register("name",{
+              required: true,
+              minLength : 2,
+            })}/>
+            {errors.name?.type === "required" && <AlertMessage>이름은 필수 입력입니다.</AlertMessage>}
+            {errors.name?.type === "minLength" && <AlertMessage>이름이 너무 짧습니다.</AlertMessage>}
+        </div>
+        <div>
+          <label htmlFor='useremail'>이메일</label>
           <Input
             id='email'
             type='text'
@@ -120,7 +183,19 @@ const Auth = () => {
     </Container>
   )
 }
-
+const DoubleCheck = styled.div`
+  position: relative;
+  button{
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background-color: #484848;
+    color: #d8d8d8;
+    font-size: 16px;
+    border-radius: 7px;
+    padding: 5px;
+  }
+`;
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -154,6 +229,9 @@ const SubmitButton = styled.button`
   margin-top: 51px;
   margin-bottom: 55px;
   background-color: #0F62FE;
+  &:focus{
+    background-color: #2f2f2f;
+  }
   color: white;
 `;
 const AlertMessage = styled.span`
