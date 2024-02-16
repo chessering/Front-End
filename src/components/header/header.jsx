@@ -44,7 +44,8 @@ export default function Header() {
     navigate('/upload');
   };
   const handleMainClick = () => {
-    navigate('/');
+    setTab('home');
+    navigate('/main');
   };
   const [tab, setTab] = useState('vote');
 

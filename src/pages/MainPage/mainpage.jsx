@@ -4,6 +4,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import searchByTitle from '../../services/mainpage';
 
 // 카테고리 드롭다운 
 const resources = [
@@ -43,9 +45,28 @@ const images = [
   { src: 'https://via.placeholder.com/300x200/555555/FFFFFF', alt: 'Image 8' },
 ];
 
-
 export default function Mainpage() {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      searchByTitle(searchTerm)
+        .then(data => {
+          setSearchResults(data.result); 
+        })
+        .catch(error => {
+          console.error('검색 중 오류 발생:', error);
+        });
+    }
+  }, [searchTerm]);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const { value } = event.target.search;
+    setSearchTerm(value);
+  };
 
 
 
@@ -55,11 +76,11 @@ export default function Mainpage() {
   const handleCategoryPopularClick = () => {
     navigate('/Category_Popular');
   };
-  const handleCategorClick = () => {
-    navigate('/Categor');
+  const handleCategoryClick = () => {
+    navigate('/Category');
   };
 
-  // onClick={handleProfileClick} 
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mx-auto grid text-center">
@@ -107,12 +128,12 @@ export default function Mainpage() {
                                     //   href={item.href}
                                     //   className="-m-3 block rounded-md p-3 hover:bg-gray-50"
                                     // >
-                                      <p className="text-base font-medium text-gray-900">
-                                        {item.name}
-                                      </p>
-                                      // <p className="mt-1 text-sm text-gray-500">
-                                      //   {item.description}
-                                      // </p>
+                                    <p className="text-base font-medium text-gray-900">
+                                      {item.name}
+                                    </p>
+                                    // <p className="mt-1 text-sm text-gray-500">
+                                    //   {item.description}
+                                    // </p>
                                     // </a>
                                   ))}
                                 </div>
@@ -124,34 +145,48 @@ export default function Mainpage() {
                         </>
                       )}
 
-                    </Popover>{/* 이 부분이 수정되었습니다 */}
+                    </Popover>
 
-                    <div className="mx-4">
-                      <form className="flex items-center relative">
-                        <MagnifyingGlassIcon className="items-center pointer-events-none absolute left-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                        <input
-                          id="search-field"
-                          className=" block w-[655px] bg-[#ECECEC] text-lg rounded-full pl-10 pr-3 py-2 text-[#A5A5A5] placeholder:text-[#A5A5A5] focus:outline-none focus:ring-0"
-                          placeholder="이미지 검색"
-                          type="search"
-                          name="search"
-                        />
-                      </form>
+
+                    <form className="flex items-center relative" onSubmit={handleSearch}>
+                      <MagnifyingGlassIcon className="items-center pointer-events-none absolute left-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                      <input
+                        id="search-field"
+                        className="block w-[655px] bg-[#ECECEC] text-lg rounded-full pl-10 pr-3 py-2 text-[#A5A5A5] placeholder:text-[#A5A5A5] focus:outline-none focus:ring-0"
+                        placeholder="이미지 검색"
+                        type="search"
+                        name="search"
+                      />
+                    </form>
+                    <div className="search-results mt-4">
+                      {searchResults.length > 0 ? (
+                        <ul>
+                          {searchResults.map((result) => (
+                            <li key={result.post_id} className="mb-2">
+                              <div className="result-title font-semibold">{result.title}</div>
+                              <img src={result.img_url} alt={result.title} className="w-20 h-20 object-cover" />
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div>검색 결과가 없습니다.</div>
+                      )}
+
                     </div>
                   </div>
                 </div>
               </div>
-            
+
             </div>
 
-            
+
           </div>
-          
+
         </main>
       </div>
       {/* 인기 바탕화면 */}
       <section className="mt-8 mb-8">
-        <h2 onClick={handlePopularClick}  className="text-2xl text-[#21272A] font-semibold">인기 바탕화면</h2>
+        <h2 onClick={handlePopularClick} className="text-2xl text-[#21272A] font-semibold">인기 바탕화면</h2>
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
           {images.map((image, index) => (
             <div key={index} className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200">
@@ -159,26 +194,26 @@ export default function Mainpage() {
             </div>
           ))}
         </div>
-        
+
       </section>
       <section className="mt-8 mb-8">
-        <h2 onClick={handleCategoryPopularClick}  className="text-2xl items-center mb-4 text-[#21272A] font-semibold">인기 카테고리</h2>
+        <h2 onClick={handleCategoryPopularClick} className="text-2xl items-center mb-4 text-[#21272A] font-semibold">인기 카테고리</h2>
 
-        <h5 onClick={handleCategorClick}  className='text-lg text-[#6B6B6B]'>카테고리 1
-        <button  type="button" className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">더보기</button>
-        </h5> 
+        <h5 className='text-lg text-[#6B6B6B]'>카테고리 1
+          <button onClick={handleCategoryClick}  type="button" className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-500  focus:outline-none">더보기</button>
+        </h5>
         <div className="flex mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
-        
+
           {images.map((image, index) => (
             <div key={index} className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
               <img src={image.src} alt={image.alt} className="object-cover object-center w-full h-full rounded-lg" />
 
             </div>
-          
+
           ))}
-       
+
         </div>
-        
+
       </section>
     </div>
   );
