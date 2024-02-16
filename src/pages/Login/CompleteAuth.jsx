@@ -7,7 +7,7 @@ import { ReactComponent as RegistrationCompleted } from "../../assets/images/Ill
 const CompleteAuth = () => {
   const navigate = useNavigate();
   const gotoLogin =() =>{
-    navigate('/login');
+    navigate('/');
   }
   return (
     <Container>

@@ -19,13 +19,13 @@ const Login = () => {
   const onSubmit =(data) =>{
       console.log(data);
       axios
-        .post(`${""}/api/auth/login`,{
+        .post(`${process.env.REACT_APP_API_URL}/auth/login`,{
           login_id : data.id,
           password : data.pw,
         })
         .then((res)=>{
           console.log(res);
-          navigate('/');
+          navigate('/main');
         })
         .catch((err)=>{
           console.log(err.response);

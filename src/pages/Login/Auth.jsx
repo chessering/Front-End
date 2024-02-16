@@ -143,7 +143,7 @@ const Auth = () => {
                 minLength : { value: 2, message: '닉네임은 1자 이상이어야 합니다.' },
               })}/>
               {errors.nickname?.type === "required" && <AlertMessage>닉네임은 필수 입력입니다.</AlertMessage>}
-              {nickNameCheck && errors.nickname && <AlertMessage>{errors.nickname.message}</AlertMessage>}
+              {errors.nickname && <AlertMessage>{errors.nickname.message}</AlertMessage>}
             <button onClick={checknickname}>중복 확인</button>
           </DoubleCheck>
         </div>
@@ -194,6 +194,12 @@ const DoubleCheck = styled.div`
     font-size: 16px;
     border-radius: 7px;
     padding: 5px;
+    &:hover{
+      background-color: #0F62FE;
+    }
+    &:focus{
+      background-color: #838383;
+    }
   }
 `;
 const Container = styled.div`
