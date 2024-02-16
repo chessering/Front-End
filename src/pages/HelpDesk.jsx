@@ -53,9 +53,10 @@ const HelpDesk = () => {
             <Label>사유</Label>
                 <Select onChange={handleReason} defaultValue={'선택하십시오'} selected={selected}>
                     <option value={'선택하십시오'}disabled hidden>선택하십시오</option>
-                    <option value={'1'}>1</option>
-                    <option value={'2'}>2</option>
-                    <option value={'3'}>3</option>
+                    <option value={'이용문의'}>이용문의</option>
+                    <option value={'오류신고'}>오류신고</option>
+                    <option value={'서비스 제안'}>서비스 제안</option>
+                    <option value={'기타'}>기타</option>
                 </Select>
             <Label>세부사항</Label>
                 <DetailArea placeholder='귀하가 겪은 문제를 최대한 자세히 설명해주세요.' onChange={handleDetail}/>
