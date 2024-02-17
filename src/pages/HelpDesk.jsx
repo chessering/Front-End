@@ -8,39 +8,38 @@ const HelpDesk = () => {
   const [reason, setReason] = useState('');
   const [detail, setDetail] = useState('');
   const [selected, setSelected] = useState(false);
-  const handleName = (event) => {
-    setName(event.target.value);
+  const handleName = (e) => {
+    setName(e.target.value);
   }
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
   }
-  const handleReason = (event) => {
-    setReason(event.target.value);
+  const handleReason = (e) => {
+    setReason(e.target.value);
     setSelected(true);
   }
-  const handleDetail = (event) =>{
-    setDetail(event.target.value);
+  const handleDetail = (e) =>{
+    setDetail(e.target.value);
   }
-  const handleSubmit =(event) =>{
-    event.preventDefault();
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
     console.log(name,email,reason,detail);
     if (name.trim() === '' || email.trim() === '' || reason.trim() === '' || detail.trim() === '') {
       alert('내용을 입력해주세요!');
       return;
     }
-    axios
-      .post(`${''}/api/help`,{
+    try{
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/help`,{
         name : name,
         email : email,
         reason : reason,
         detail : detail,
-      })
-      .then((res)=>{
-        console.log(res);
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
+      });
+      console.log(res);
+    }
+    catch(err){
+      console.log(err);
+    }
   }
   return (
     <Container>
@@ -118,5 +117,9 @@ const SubmitButton = styled.button`
   border-radius: 7px;
   background-color: #0F62FE;
   color: #ffffff;
+  &:hover{
+    background-color: #2f2f2f;
+    
+  }
 `;
 export default HelpDesk
