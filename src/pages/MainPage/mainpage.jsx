@@ -5,7 +5,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import searchByTitle from '../../services/mainpage';
+import mainpageServices from '../../services/mainpage';
 
 // 카테고리 드롭다운 
 const resources = [
@@ -52,9 +52,10 @@ export default function Mainpage() {
 
   useEffect(() => {
     if (searchTerm) {
-      searchByTitle(searchTerm)
+      mainpageServices.getSearchByTitle(searchTerm)
         .then(data => {
-          setSearchResults(data.result); 
+          console.log("받아온 데이터:", data); 
+          setSearchResults(data.result);
         })
         .catch(error => {
           console.error('검색 중 오류 발생:', error);
@@ -79,6 +80,8 @@ export default function Mainpage() {
   const handleCategoryClick = () => {
     navigate('/Category');
   };
+
+  console.log(searchResults);
 
 
   return (

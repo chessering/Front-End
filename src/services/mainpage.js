@@ -1,6 +1,7 @@
 import { client } from './api';
 
-const searchByTitle = async (title) => {
+
+const getSearchByTitle = async (title) => {
     try {
         const encodedTitle = encodeURIComponent(title);
         const url = `/search/title?title=${encodedTitle}`;
@@ -15,5 +16,22 @@ const searchByTitle = async (title) => {
     }
 };
 
-export default searchByTitle;
+const getPopular = async () => {
+    try{
+        const url = `/popular/wallpaper`;
+
+        const response = await client.get(url);
+
+        console.log(response.data);
+        return response.data;
+    }catch(error){
+        console.error('Error during API call:', error);
+        throw error;
+    }
+};
+
+const mainpageServices = {getSearchByTitle, getPopular};
+
+export default mainpageServices;
+
 
