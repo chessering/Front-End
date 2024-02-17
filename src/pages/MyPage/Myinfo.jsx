@@ -61,16 +61,16 @@ function Myinfo() {
     }, [])
 
     console.log(userInfo);
-    useEffect(() => {
-        location.state = {
-            nickname : userInfo.nickname,
-            name : userInfo.name,
-            email : userInfo.email,
-            introduction : userInfo.introduction,
-        }
-    }, []);
+    // useEffect(() => {
+    //     location.state = {
+    //         nickname : userInfo.nickname,
+    //         name : userInfo.name,
+    //         email : userInfo.email,
+    //         introduction : userInfo.introduction,
+    //     }
+    // }, []);
 
-    console.log(location.state);
+    // console.log(location.state);
 
     return(
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
