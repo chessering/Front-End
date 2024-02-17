@@ -24,7 +24,7 @@ const images = [
 ];
 
 
-export default function Category_Popular() {
+export default function Category() {
     const navigate = useNavigate();
 
     return (

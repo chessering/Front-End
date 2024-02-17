@@ -5,7 +5,7 @@ import Auth from './pages/Login/Auth';
 import CompleteAuth from './pages/Login/CompleteAuth';
 import Layout from './components/layout';
 
-import Mainpage from "./pages/MainPage/mainpage"
+import Mainpage from "./pages/MainPage/mainpage"; //mg
 import Popular from "./pages/MainPage/Popular";  // 인기 바탕화면
 import Category from "./pages/MainPage/Category"; //카테고리
 import Category_Popular from "./pages/MainPage/Category_Popular"; //인기 카테고리
@@ -46,7 +46,7 @@ function App() {
           <Route path='/myinfomodify' element={<MyInfoModify/>}/>
           <Route path='/myposts' element={<MyPosts/>}/>
           <Route path='/likeposts' element={<LikePosts/>}/>
-          <Route path='/notfound' element={<NotFound/>}/>
+          <Route path='*' element={<NotFound/>}/>
           <Route path='/helpdesk' element={<HelpDesk/>}/>
         </Route>
       </Routes>
