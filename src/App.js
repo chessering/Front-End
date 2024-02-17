@@ -46,7 +46,7 @@ function App() {
           <Route path='/myinfomodify' element={<MyInfoModify/>}/>
           <Route path='/myposts' element={<MyPosts/>}/>
           <Route path='/likeposts' element={<LikePosts/>}/>
-          <Route path='/notfound' element={<NotFound/>}/>
+          <Route path='*' element={<NotFound/>}/>
           <Route path='/helpdesk' element={<HelpDesk/>}/>
         </Route>
       </Routes>
