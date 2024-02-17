@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import styled from 'styled-components'
 import MyLists from "./MyLists";
 
@@ -28,6 +29,22 @@ const Container2 = styled.div`
 `
 
 function Myinfo() {
+
+    const token = localStorage.getItem('access_Token');
+    console.log(token);
+    console.log(localStorage);
+    const res = axios.get(`${process.env.REACT_APP_API_URL}/mypages/profile`, {
+        headers : {
+            'authorization' : `${token}`
+        }
+    })
+    .then(response => {
+        console.log(response);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+
     return(
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
             <MyLists/>
@@ -43,13 +60,13 @@ function Myinfo() {
                 </div>
                 <div className="flex mt-20 ml-16 justify-center flex-col">
                     <div className="mb-2 font-normal">ID</div>
-                    <Container1></Container1>
+                    <Container1>{}</Container1>
                     <div className="mb-2 font-normal">이름</div>
-                    <Container1></Container1>
+                    <Container1>{}</Container1>
                     <div className="mb-2 font-normal">Email</div>
-                    <Container1></Container1>
+                    <Container1>{}</Container1>
                     <div className="mb-2 font-normal">소개</div>
-                    <Container2></Container2>
+                    <Container2>{}</Container2>
                 </div>
             </div>
 
