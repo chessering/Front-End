@@ -1,11 +1,37 @@
 import React, { useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ProfileBox, ProfileWrap } from '../Profile/UserInfo'
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function ImgInfo() {
+export default function ImgInfo( { postid }) {
   const [isMore, setIsMore]= useState(false);
   const textLimit = useRef(60);
+  const navigate = useNavigate();
+  
+  /* 이미지 정보 가져오기
+  const fetchImg = async () => {
+    try{
+      const endpoint = `${""}/api/download`
+
+    } catch(error){
+
+    }
+  }
+  */
+
+  /* 좋아요 누르기 API
+  const postLike = async () => {
+
+  }
+  */
+
+  // API 연결 전 더미데이터
+  const userid = 'User ID'
+  const followers = 'N'
+  const title = '제목'
   const comment = `신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 `;
+  const tags = ['태그1', '태그2', '태그3', '태그4', '태그5']
+  
   const commenter = useMemo(() => {
     const shortReview = comment.slice(0, textLimit.current);
     if (comment.length > textLimit.current) {
@@ -14,6 +40,11 @@ export default function ImgInfo() {
     }
     return comment;
   }, [isMore])
+  
+  const handleNavigate = (e) => {
+    e.preventDefault();
+    navigate(`/profile/${userid}`)
+  }
 
   return (
     <ImgBox>
@@ -21,7 +52,7 @@ export default function ImgInfo() {
       <BackgroundImg></BackgroundImg>
       <ImgInfoWrap>
         <TitleWrap>
-          <Title>제목</Title>
+          <Title>{title}</Title>
           <DownloadBtn>저장</DownloadBtn>
         </TitleWrap>
         <DescriptionWrap>
@@ -29,21 +60,19 @@ export default function ImgInfo() {
           <More onClick={() => setIsMore(!isMore)}> {(comment.length>textLimit.current) && (isMore ? '닫기' : '...더 보기')}</More>
         </DescriptionWrap>        
         <TagList>
-          <Tag>태그 1</Tag>
-          <Tag>태그 1</Tag>
-          <Tag>태그 1</Tag>
-          <Tag>태그 1</Tag>
-          <Tag>태그 1</Tag>
+          {tags.map((tag) => {
+            return <Tag>{tag}</Tag>
+          })}
         </TagList>
         <UploaderWrap>
           <UserWrap>
-            <ProfileImg></ProfileImg>
+            <ProfileImg onClick={handleNavigate}></ProfileImg>
             <UserIDWrap>
-              <UserID>User ID</UserID>
-              <Followers>팔로워 N명</Followers>
+              <UserID onClick={handleNavigate}>{userid}</UserID>
+              <Followers>팔로워 {followers}명</Followers>
             </UserIDWrap>
           </UserWrap>
-          <FollowBtn>팔로우</FollowBtn>
+          <Like>좋아요</Like>
         </UploaderWrap>
         <OtherWrap>
           <OtherBtn>공유</OtherBtn>
@@ -119,7 +148,7 @@ const DownloadBtn = styled.button`
 
   color: #FFFFFF;
 
-  &:hover {
+  &:active {
   background: #2F2F2F;
   }
 `
@@ -202,6 +231,8 @@ export const ProfileImg = styled.img`
   border: none;
   background: #D9D9D9;
   margin-right: 10px;
+
+  cursor: pointer;
 `
 
 export const UserID = styled.div`
@@ -216,6 +247,7 @@ export const UserID = styled.div`
   /* or 25px */
 
   color: #6B6B6B;
+  cursor: pointer;
 `
 
 export const Followers = styled.div`
@@ -232,7 +264,7 @@ export const Followers = styled.div`
   color: #9D9D9D;
 `
 
-export const FollowBtn = styled.button`
+export const Like = styled.button`
   width: 66px;
   height: 34px;
 
@@ -248,7 +280,7 @@ export const FollowBtn = styled.button`
 
   color: #6B6B6B;
 
-  &:hover {
+  &:active {
   background: #2F2F2F;
 
   color: #FFFFFF;

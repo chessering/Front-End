@@ -4,8 +4,11 @@ import Login from "./pages/Login/Login";
 import Auth from './pages/Login/Auth';
 import CompleteAuth from './pages/Login/CompleteAuth';
 import Layout from './components/layout';
+
 import Mainpage from "./pages/MainPage/mainpage"
-import Morepage from "./pages/MainPage/more_page";
+import Popular from "./pages/MainPage/Popular";  // 인기 바탕화면
+import Category from "./pages/MainPage/Category"; //카테고리
+import Category_Popular from "./pages/MainPage/Category_Popular"; //인기 카테고리
 
 import Download from './pages/UserPage/Donwload';
 import UserProfile from './pages/UserPage/UserProfile';
@@ -18,22 +21,25 @@ import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
+// 수정: 로그인  / 라우팅 > mainpage /mainpage 로 라우팅 수정
 
 
 function App() {
-  const location = useLocation();
-  const background = location.state && location.state.background;
-
   return (
     <div>
-      <Routes location={background || location}>
+      <Routes>
         <Route element={<Layout />}>
-          <Route path='/' element={<Mainpage/>}/>
-          <Route path='/more' element={<Morepage/>}/>
-          <Route path='/login' element={<Login/>}/>
+          {/* <Route path='/' element={<Mainpage/>}/> */}
+
+          <Route path='/main' element={<Mainpage/>}/>
+          <Route path='/Category' element={<Category/>}/>
+          <Route path='/Popular' element={<Popular/>}/>
+          <Route path='/Category_Popular' element={<Category_Popular/>}/>
+
+          <Route path='/' element={<Login/>}/>
           <Route path='/auth' element={<Auth/>}/>
           <Route path='/authcomplete' element={<CompleteAuth/>}/>
-          <Route path='/download' element={<Download/>}/>
+          <Route path='/download/:postid' element={<Download/>}/>
           <Route path='/profile/:userid' element={<UserProfile/>}/>
           <Route path='/upload' element={<Upload/>}/>
           <Route path='/myinfo' element={<Myinfo/>}/>
@@ -44,12 +50,6 @@ function App() {
           <Route path='/helpdesk' element={<HelpDesk/>}/>
         </Route>
       </Routes>
-      {background && (
-        <Routes>
-          <Route path='/profile/:userid/followers' element={<Modal title='팔로워'/>}/>
-          <Route path='/profile/:userid/following' element={<Modal title='팔로잉'/>}/>
-        </Routes>
-      )}
     </div>
   );
 }

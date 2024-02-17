@@ -2,6 +2,8 @@ import React from 'react';
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { loginState } from '../../recoil/atom';
+import { useSetRecoilState } from "recoil";
 import axios from 'axios';
 
 const Login = () => {
@@ -11,41 +13,39 @@ const Login = () => {
     formState: { errors },
     setError,
   } = useForm();
-
+  const setIsLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
+
   const gotoAuth =() =>{
     navigate('/auth');
   }
-  const onSubmit =(data) =>{
-      console.log(data);
-      axios
-        .post(`${""}/api/auth/login`,{
-          login_id : data.id,
-          password : data.pw,
-        })
-        .then((res)=>{
-          console.log(res);
-          navigate('/');
-        })
-        .catch((err)=>{
-          console.log(err.response);
-          switch(err.response.status){
-            case "MEMBER4006":
-              setError("password",{ type:'wrong password', message: '비밀번호가 틀립니다.'});
-              break;
-            case 403:
-              if(window.confirm("등록된 정보가 없습니다. 회원가입 하시겠습니까?")){
-                navigate('/auth');
-              }
-              break;
-            case 404:
-              if(window.confirm("네트워크 에러")){
-                window.location.reload();
-              }
-            default:
-              break;
+  const onSubmit = async (data) =>{
+    // console.log(data);
+    try{
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`,{
+        login_id : data.id,
+        password : data.password,
+      });
+      console.log(res);
+      switch(res.data.code){
+        case "MEMBER4006":
+          setError("password",{ type:'wrong password', message: '비밀번호가 틀립니다.'});
+          break;
+        case 'MEMBER4001':
+          if(window.confirm("등록된 정보가 없습니다. 회원가입 하시겠습니까?")){
+            navigate('/auth');
           }
-        })
+          break;
+        default:
+          navigate('/main');
+          localStorage.setItem('access_Token', res.data.access_token);
+          setIsLogin(true);
+          break;
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
   }
   return (
     <Container>
