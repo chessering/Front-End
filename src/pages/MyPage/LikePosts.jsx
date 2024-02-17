@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import MyLists from "./MyLists.jsx";
+import Pgnation from "./Pgnation";
 import styled from "styled-components";
 
-const StyledButton = styled.button`
+const ModifyButton = styled.button`
     background : black;
     color : white;
     border : none;
@@ -10,6 +11,23 @@ const StyledButton = styled.button`
     width : 93px;
     height : 42px;
     margin-left : 200px;
+`
+const CancelButton = styled.button`
+    background : black;
+    color : white;
+    border : none;
+    border-radius : 7px;
+    width : 93px;
+    height : 42px;
+    margin-left : 107px;
+`
+const DeleteButton = styled.button`
+    background : black;
+    color : white;
+    border : none;
+    border-radius : 7px;
+    width : 93px;
+    height : 42px;
 `
 
 const StyledList = styled.div`
@@ -40,7 +58,13 @@ function LikePosts() {
         console.log(target);
         setChecked(!checked);
         checkItemHandler(target.id, target.checked);
-      }
+    }
+
+    const Cancelfunc = () => {
+        setClicked(!clicked);
+        checkItems.clear();
+        setChecked(false);
+    }
 
     const checkItemHandler = (id, isChecked) => {
         if (isChecked) {
@@ -54,7 +78,6 @@ function LikePosts() {
         }
       }
     //추후 api 받아온 정보로 교체할 예정
-    // const [postInfo, setPostInfo] = useState([]);
     // const token = localStorage.getItem('access_Token');
   
 	// async function handlePostInfo(){
@@ -65,12 +88,37 @@ function LikePosts() {
     //     'authorization' : `${token}`
     // }
     //     })
-    //     setPostInfo(result.data)
     // }
 
-    // useEffect(() =>{
-    //     handlePostInfo()
-    // },[])
+
+    function SubmitPostInfo() {
+
+        const array = Array.from(checkItems);
+        const JsonArray = array.map(item => ({"post_id" : item}));
+        const postresult = JSON.stringify(JsonArray);
+
+        // const submitpost = axios.post({
+            // url = `${process.env.REACT_APP_API_URL}/mypages/liked_posting/modify`,
+            // headers : {
+            // 'authorization' : `${token}`
+            // },
+            // body : {
+            //     postresult
+            // }
+        // })
+    }
+
+    const [page, setPage] = useState(1);
+    const [pageclicked, setPagelicked] = useState(false);
+    const limit = 10; // 한 페이지의 post 최대갯수
+    const offset = (page - 1) * limit;
+
+    const postsData = (dummyposts) => {
+        if(dummyposts){
+            let result = dummyposts.slice(offset, offset + limit);
+            return result;
+        }
+    }
 
     const postlist = dummyposts.map((post, index) => (<StyledList key={index} even = {index % 2 === 0}>
         <div className="flex flex-row flex-wrap justify-between w-12/12 align-baseline">
@@ -94,7 +142,17 @@ function LikePosts() {
             <MyLists/>
             <div className="flex flex-row mt-12 w-8/12 ml-40">
                 <div className="text-5xl mb-16 font-bold whitespace-nowrap text-left mr-96">좋아요 누른 게시물</div>
-                <StyledButton onClick = {() => setClicked(!clicked)}>수정</StyledButton>
+                {clicked &&
+                    <div>
+                        <CancelButton onClick = {() => {Cancelfunc()}}>취소</CancelButton>
+                        <DeleteButton onClick = {() => {SubmitPostInfo()}}>삭제</DeleteButton>
+                    </div>
+                }
+                {!clicked &&
+                    <ModifyButton onClick = {() => setClicked(!clicked)}>수정</ModifyButton>
+                }
+
+
             </div>
             <div className="flex w-7/12 flex-col">
                 <div className="flex flex-row align-middle justify-between w-12/12 mb-2">
@@ -106,6 +164,7 @@ function LikePosts() {
                 </div>
                 <StyledList>
                         {postlist}
+                        <Pgnation limit={limit} page={page} totalPosts={dummyposts.length} setPage={setPage}/>
                 </StyledList>
             </div>
         </div>
