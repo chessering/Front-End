@@ -18,7 +18,7 @@ const Auth = () => {
 
     const [nickNameCheck, setNickNameCheck] = useState(false);
 
-    const checknickname = async(e) =>{
+    const checknickname = async (e) =>{
       e.preventDefault();
       console.log(watch('nickname'));
       if(watch('nickname')===""){
@@ -32,48 +32,49 @@ const Auth = () => {
           }
         });
         console.log(res);
-        alert("사용 가능한 닉네임입니다.");
-        setNickNameCheck(true);
+        if(res.data.code === "MEMBER4007"){
+          alert("이미 존재하는 닉네임입니다. 다시 입력해주세요.");
+          setError('nickname',{message:"이미 존재하는 닉네임입니다."})
+        }
+        else{
+          alert("사용 가능한 닉네임입니다.");
+          setNickNameCheck(true);
+        }
       }
       catch(err){
         setNickNameCheck(false);
         console.log(err);
       }
     }
-    const onSubmit =(data) =>{
-        console.log(data);
-        if(nickNameCheck === false){
-          alert("닉네임 중복 체크를 해주세요");
-          return;
+    const onSubmit = async (data) =>{
+      // console.log(data);
+      if(nickNameCheck === false){
+        alert("닉네임 중복 체크를 해주세요");
+        return;
       }
-        axios
-          .post(`${process.env.REACT_APP_API_URL}/auth/join`,{
-            login_id : data.id,
-            password : data.pw,
-            nickname : data.nickname,
-            name : data.name,
-            email : data.email,
-          })
-          .then((res)=>{
-            console.log(res);
-            navigate('/authcomplete');
-          })
-          .catch((err)=>{
-            console.log(err);
-            switch(err.response.status){
-              case 'MEMBER4003':
-                if(window.confirm("이미 존재하는 아이디입니다. 아이디를 다시 입력해주세요.")){
-                  window.location.reload();
-                }
-                break;
-              // case 404:
-              //   if(window.confirm("네트워크 에러")){
-              //     window.location.reload();
-              //   }
-              default:
-                break;
+      try{
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/join`,{
+          login_id : data.id,
+          password : data.password,
+          nickname : data.nickname,
+          name : data.name,
+          email : data.email,
+        });
+        console.log(res);
+        switch(res.data.code){
+          case 'MEMBER4003':
+            if(window.confirm("이미 존재하는 아이디입니다. 아이디를 다시 입력해주세요.")){
+              window.location.reload();
             }
-          })
+            break;
+          default:
+            navigate('/authcomplete');
+            break;
+        }
+      }
+      catch(err){
+        console.log(err);
+      }
     }
   return (
     <Container>
@@ -196,9 +197,6 @@ const DoubleCheck = styled.div`
     padding: 5px;
     &:hover{
       background-color: #0F62FE;
-    }
-    &:focus{
-      background-color: #838383;
     }
   }
 `;
