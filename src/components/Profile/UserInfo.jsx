@@ -2,37 +2,20 @@ import React from 'react'
 import { Link, useLocation, useNavigate, Outlet, useParams } from 'react-router-dom';
 import styled from "styled-components"
 
-export default function UserInfo( { userid, location} ) {
-  const navigate = useNavigate();
-
-  /*  업로더 정보 가져오기
-  const fetchProfile = async () => {
-    try{
-      const endpoint = `${""}/api/download`
-
-    } catch(error){
-
-    }
-  }
-  */
-
-// API  연걸 전 더미데이터
-  const posts = 10531
-  const bio = `신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의 보호를 받는다. 국회는 국정을 감사하거나 특정한 국정사안에 대하여 조사할 수 있으며, 이에 필요한 서류의 제출 또는 증인의 출석과 증언이나 의견의 진술을 요구할 수 있다.`
-
+export default function UserInfo( { userid, profile} ) {
   return (
     <ProfileBox> 
       <ProfileWrap>
-        <ProfileImg></ProfileImg>
+        <ProfileImg src={profile.profile_img}></ProfileImg>
         <UserInfoWrap>
-          <UserID>{userid}</UserID>
+          <UserID>{profile.name}</UserID>
           <CountList>
             <CountWrap>
               <CountHeader>게시물</CountHeader>
-              <CountBody>{posts.toLocaleString("ko-KR")}</CountBody>
+              <CountBody>{profile.post.length.toLocaleString("ko-KR")}</CountBody>
             </CountWrap>
           </CountList>
-          <ProfileBio>{bio}</ProfileBio>
+          <ProfileBio>{profile.introduction}</ProfileBio>
         </UserInfoWrap>
       </ProfileWrap>
     </ProfileBox>
@@ -58,7 +41,6 @@ const ProfileImg = styled.img`
   display: flex;
   width: 281px;
   height: 281px;
-  border: 1px solid black;
 `
 
 const UserInfoWrap = styled.div`

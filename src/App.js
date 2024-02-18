@@ -32,6 +32,7 @@ function App() {
           <Route index element={<Login/>}/>
         </Route>
 
+
         {/* 나머지 페이지에는 Layout 적용 */}
         <Route path='/' element={<Layout />}>
           <Route path='main' element={<Mainpage/>}/>
@@ -49,6 +50,7 @@ function App() {
           <Route path='likeposts' element={<LikePosts/>}/>
           <Route path='notfound' element={<NotFound/>}/>
           <Route path='helpdesk' element={<HelpDesk/>}/>
+
         </Route>
 
         {/* NotFound 페이지 추가 */}

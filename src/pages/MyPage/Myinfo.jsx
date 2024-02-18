@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components'
 import MyLists from "./MyLists";
 
 const MyImage = styled.img`
     width: 239px;
-    height: 239px;
+    height: 289px;
     margin-bottom: 10px;
     
 `
@@ -15,7 +17,8 @@ const Container1 = styled.div`
     background: #F2F1F1;
     border-radius: 7px;
     margin-bottom: 18px;
-    padding: 3px;
+    padding: 5px;
+    padding-left : 5px;
 `
 
 const Container2 = styled.div`
@@ -23,33 +26,75 @@ const Container2 = styled.div`
     height: 139px;
     background: #F2F1F1;
     border-radius: 7px;
-    padding: 3px;
+    padding: 6px;
     margin-bottom : 38px;
 `
 
 function Myinfo() {
+
+    const location = useLocation();
+    const [userInfo, setUserInfo] = useState({
+        nickname : '',
+        name : '',
+        email : '',
+        introduction : '',
+        profile_img : "",
+    })
+
+    const token = localStorage.getItem('access_Token');
+    console.log(token);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/mypages/profile`, {
+                    headers : {
+                        'authorization' : `${token}`
+                    }
+                });
+                console.log(response);
+                setUserInfo(response.data.result);
+
+            }catch(error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, [])
+
+    console.log(userInfo);
+    // useEffect(() => {
+    //     location.state = {
+    //         nickname : userInfo.nickname,
+    //         name : userInfo.name,
+    //         email : userInfo.email,
+    //         introduction : userInfo.introduction,
+    //     }
+    // }, []);
+
+    // console.log(location.state);
+
     return(
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
-            <MyLists/>
+            <MyLists info={location.state}/>
             <div className="flex w-9/12 float-left ml-96">
                 <div className="flex mb-4 justify-center flex-col mr-20 ">
-                    <div className="text-5xl mb-16 font-bold whitespace-nowrap">나의 정보</div>
+                    <div className="text-5xl mb-8 font-bold whitespace-nowrap">나의 정보</div>
                     <div className="flex flex-col items-center">
-                        <MyImage/>
-                        <div className="text-gray-500 text-base font-medium hover:underline decoration-current ">프로필 이미지 변경</div>
+                        <MyImage src={userInfo.profile_img} />
                     </div>
                     
 
                 </div>
                 <div className="flex mt-20 ml-16 justify-center flex-col">
                     <div className="mb-2 font-normal">ID</div>
-                    <Container1></Container1>
+                    <Container1>{userInfo.nickname}</Container1>
                     <div className="mb-2 font-normal">이름</div>
-                    <Container1></Container1>
+                    <Container1>{userInfo.name}</Container1>
                     <div className="mb-2 font-normal">Email</div>
-                    <Container1></Container1>
+                    <Container1>{userInfo.email}</Container1>
                     <div className="mb-2 font-normal">소개</div>
-                    <Container2></Container2>
+                    <Container2>{userInfo.introduction}</Container2>
                 </div>
             </div>
 
