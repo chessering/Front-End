@@ -1,83 +1,178 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { ProfileBox, ProfileWrap } from '../Profile/UserInfo'
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { loadingState } from '../../recoil/atom';
 
-export default function ImgInfo( { postid }) {
+export default function ImgInfo( { image, uploader }) {
+  const url = process.env.REACT_APP_API_URL
+  const token = window.localStorage.getItem('access_Token');
+
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
+
   const [isMore, setIsMore]= useState(false);
+  const [isLike, setIsLike] = useState(false);
   const textLimit = useRef(60);
   const navigate = useNavigate();
   
-  /* 이미지 정보 가져오기
-  const fetchImg = async () => {
-    try{
-      const endpoint = `${""}/api/download`
+  // 좋아요 여부 확인하기
+  const checkLike = async () => {
+    setIsLoading(true)
+    try {
+      const res1 = await axios.post(`${url}/like/${image.post_id}`, null, {
+        headers: {
+          authorization: token
+        },
+      });
+      console.log('Check Like...: ', res1.data);
+      if(!res1.data.isSuccess) throw new Error('통신오류')
 
-    } catch(error){
-
+      const res2 = await axios.delete(`${url}/like/${image.post_id}`, {
+        headers: {
+          authorization: token
+        },
+      });
+      console.log('Done!: ', res2.data);
+      setIsLike(false)
+    } catch (error) {
+      setIsLike(true)
+    } finally {
+      setIsLoading(false);
     }
-  }
-  */
+  };
 
-  /* 좋아요 누르기 API
+  //좋아요 누르기 API
   const postLike = async () => {
-
+    try {
+      const res = await axios.post(`${url}/like/${image.post_id}`, null, {
+        headers: {
+          authorization: token
+        },
+      });
+      console.log('Like API: ', res.data);
+      setIsLike(!isLike)
+      if(!res.data.isSuccess) throw new Error('통신오류')
+  } catch (error) {
+    console.error(error);
   }
-  */
+};
+
+//좋아요 취소 API
+  const postUnlike = async () => {
+    try {
+      const res = await axios.delete(`${url}/like/${image.post_id}`, {
+        headers: {
+          authorization: token
+        },
+      });
+      console.log('Unlike API: ', res.data);
+      if(!res.data.isSuccess) throw new Error('통신오류')
+      setIsLike(!isLike)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const handleClickLike = async (e) => {
+    e.preventDefault();
+    if (isLike) 
+      postUnlike()
+    else
+      postLike()
+  }
+  
+  //다운로드 버튼
+  const handleDownload = () => {
+    console.log(image.img_url)
+    axios.get(image.img_url, { responseType: "blob" })
+      .then((res) => {
+        console.log(res)
+        const extension = res.data.type.substring("image/".length);
+        const url = URL.createObjectURL(new Blob([res.data]));
+        const a = document.createElement("a");
+        a.href = url;
+        a.style.display = "none";
+        a.download = `${image.title}.${extension}`;
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+  }
 
   // API 연결 전 더미데이터
-  const userid = 'User ID'
   const followers = 'N'
-  const title = '제목'
-  const comment = `신체장애자 및 질병·노령 기타의 사유로 생활능력이 없는 국민은 법률이 정하는 바에 의하여 국가의신체장애자 및 질병·노령 `;
-  const tags = ['태그1', '태그2', '태그3', '태그4', '태그5']
   
   const commenter = useMemo(() => {
-    const shortReview = comment.slice(0, textLimit.current);
-    if (comment.length > textLimit.current) {
-      if (isMore) { return comment; }
-      return shortReview;
+    if(image.explanation) {
+      const shortReview = image.explanation.slice(0, textLimit.current);
+      if (image.explanation.length > textLimit.current) {
+        if (isMore) { return image.explanation; }
+        return shortReview;
+      }
+      return image.explanation;
     }
-    return comment;
-  }, [isMore])
+  }, [isMore, image.explanation])
   
   const handleNavigate = (e) => {
     e.preventDefault();
-    navigate(`/profile/${userid}`)
+    navigate(`/profile/${image.user_id}`, {
+      state: {
+        profile: uploader
+      }
+    });
+    window.scrollTo(0, 0);
   }
+
+  useEffect(() => {
+    setIsLike(false);
+    checkLike();
+  }, [image])
 
   return (
     <ImgBox>
       <ImgWrap>
-      <BackgroundImg></BackgroundImg>
+      <Wallpaper src={image.img_url}></Wallpaper>
       <ImgInfoWrap>
         <TitleWrap>
-          <Title>{title}</Title>
-          <DownloadBtn>저장</DownloadBtn>
+          <Title>{image.title}</Title>
+          <Download onClick={handleDownload}>저장</Download>
         </TitleWrap>
         <DescriptionWrap>
           <Description>{commenter}</Description>
-          <More onClick={() => setIsMore(!isMore)}> {(comment.length>textLimit.current) && (isMore ? '닫기' : '...더 보기')}</More>
+          {image.explanation && <More onClick={() => setIsMore(!isMore)}> {(image.explanation.length>textLimit.current) && (isMore ? '닫기' : '...더 보기')}</More>}
         </DescriptionWrap>        
         <TagList>
-          {tags.map((tag) => {
-            return <Tag>{tag}</Tag>
+          {image.Tags.map((tag, index) => {
+            return <Tag key={index}>{tag.tagging}</Tag>
           })}
         </TagList>
         <UploaderWrap>
+        {uploader && 
           <UserWrap>
-            <ProfileImg onClick={handleNavigate}></ProfileImg>
+            <ProfileImg src={uploader.profile_img} onClick={handleNavigate}></ProfileImg>
             <UserIDWrap>
-              <UserID onClick={handleNavigate}>{userid}</UserID>
+              <UserID onClick={handleNavigate}>{uploader.name}</UserID>
               <Followers>팔로워 {followers}명</Followers>
             </UserIDWrap>
           </UserWrap>
-          <Like>좋아요</Like>
+        }
         </UploaderWrap>
         <OtherWrap>
-          <OtherBtn>공유</OtherBtn>
-          <OtherBtn>정보</OtherBtn>
-          <OtherBtn>신고</OtherBtn>
+          {isLike ? <Like onClick={handleClickLike}/> : <Unlike onClick={handleClickLike}/>}          
+          <OtherContainer>
+            <OtherBtn>공유</OtherBtn>
+            <OtherBtn>정보</OtherBtn>
+            <OtherBtn>신고</OtherBtn>
+          </OtherContainer>
         </OtherWrap>
       </ImgInfoWrap>
       </ImgWrap>
@@ -85,50 +180,52 @@ export default function ImgInfo( { postid }) {
   )
 }
 
-const ImgBox = styled(ProfileBox)``
-
-const ImgWrap = styled(ProfileWrap)`
-  width: 1000px;
-  height: 500px;
+const ImgBox = styled(ProfileBox)`
+  
 `
 
-const BackgroundImg = styled.img`
+const ImgWrap = styled(ProfileWrap)`
+  width: auto;
+`
+
+const Wallpaper = styled.img`
   display: flex;
-  width: 588px;
-  height: 364px;
-  border: 1px solid black;
+
+  max-width: 588px;
+  max-height: 364px;
+  margin-right: 64px;
 `
 
 const ImgInfoWrap = styled.div`
+  width: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 352px;
-
 `
 
 const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
+
+  margin-bottom: 24px;
 `
 
 const Title = styled.div`
-  width: 78px;
   height: 35px;
+  margin-right: 24px;
 
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
   line-height: 110%;
-  /* or 35px */
+  
   display: flex;
   align-items: center;
 
   color: #2F2F2F;
 `
 
-const DownloadBtn = styled.button`
+const Download = styled.button`
   width: 66px;
   height: 34px;
   background: #0F62FE;
@@ -149,13 +246,15 @@ const DownloadBtn = styled.button`
   color: #FFFFFF;
 
   &:active {
-  background: #2F2F2F;
+    background: #2F2F2F;
   }
 `
 
 const DescriptionWrap = styled.div`
   display: flex;
   flex-direction: column;
+
+  margin-bottom: 24px;
 `
 const Description = styled.div`
   display: flex;
@@ -186,7 +285,8 @@ const More = styled.div`
 
 const TagList = styled.ul`
   display: flex;
-  justify-content: 
+  
+  margin-bottom: 24px;
 `
 
 const Tag = styled.li`
@@ -196,8 +296,9 @@ const Tag = styled.li`
 
   margin-right: 10px;
 
-  width: 58px;
   height: 31px;
+  padding-left: 10px;
+  padding-right: 10px;
   background: #E9E9E9;
   border-radius: 7px;
 
@@ -213,6 +314,8 @@ const Tag = styled.li`
 export const UploaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
+  
+  margin-bottom: 24px;
 `
 
 export const UserWrap = styled.div`
@@ -236,7 +339,7 @@ export const ProfileImg = styled.img`
 `
 
 export const UserID = styled.div`
-  width: 54px;
+  width: auto;
   height: 25px;
 
   font-family: 'Pretendard Variable';
@@ -264,7 +367,7 @@ export const Followers = styled.div`
   color: #9D9D9D;
 `
 
-export const Like = styled.button`
+export const Follow = styled.button`
   width: 66px;
   height: 34px;
 
@@ -286,9 +389,38 @@ export const Like = styled.button`
   color: #FFFFFF;
   }
 `
+
+const Like = styled(HeartFilled)`
+  color: red;
+  font-size: 30px;
+
+  transition: transform 300ms ease;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+`
+
+const Unlike = styled(HeartOutlined)`
+  font-size: 30px;
+
+  transition: transform 300ms ease;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    color: red;
+  }
+`
+
 const OtherWrap = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+`
+
+const OtherContainer = styled.div`
+  display: flex;
 `
 
 const OtherBtn = styled.button`

@@ -9,3 +9,7 @@ export const loginState = atom({
   effects_UNSTABLE: [persistAtom],
 })
 
+export const loadingState = atom({
+  key: "loadingState",
+  default: false,
+})
