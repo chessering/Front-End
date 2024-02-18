@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
-import { Fragment } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { getPopularCategory } from '../../services/api';
+import { useRecoilState } from 'recoil';
+import { loadingState } from '../../recoil/atom';
 
  
 // 카테고리 인기 페이지
 
 export default function Category_Popular() {
+    const [ _isLoading, setIsLoading ] = useRecoilState(loadingState);
     const { isLoading, data : popCategory } = useQuery({
       queryKey: ["popCategory"],
       queryFn: () => getPopularCategory(),
@@ -26,11 +25,12 @@ export default function Category_Popular() {
     useEffect(()=>{
       console.log(popCategory);
     },[])
-    if (isLoading) {
-      return (
-          <div>로딩 중..</div>
-      )
-  }
+    if(isLoading){
+      setIsLoading(true);
+    }
+    else{
+      setIsLoading(false);
+    }
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="flex mt-9 items-center">
