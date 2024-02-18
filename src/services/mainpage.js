@@ -1,5 +1,6 @@
 import { client } from "./api";
 
+
 const getSearchByTitle = async (title) => {
   try {
     const encodedTitle = encodeURIComponent(title);

@@ -6,10 +6,14 @@ import Pagination from '../../components/Profile/Pagination'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import Pgnation from '../MyPage/Pgnation'
+import { useRecoilState } from 'recoil'
+import { loadingState } from '../../recoil/atom'
 
 export default function Donwload() {
   const url = process.env.REACT_APP_API_URL
   const token = window.localStorage.getItem('access_Token');
+
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
 
   const { postid } = useParams();
   const [wallpaper, setWallpaper] = useState();
@@ -28,6 +32,7 @@ export default function Donwload() {
   }
   
   const fetchImg = async () => {
+    setIsLoading(true);
     try{
       const res = await axios.get(`${url}/post/${postid}`, {
         headers: {
@@ -35,13 +40,14 @@ export default function Donwload() {
         }
       })
       console.log("wallpaper", res.data.result);
-      setWallpaper((prev) => res.data.result);
-      console.log("이미지 정보 불러오기 성공")
+      setWallpaper(res.data.result);
 
       fetchUploader(res.data.result.user_id)
       fetchMore(res.data.result.Category.category_name)
     } catch(error){
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -52,7 +58,7 @@ export default function Donwload() {
           authorization: token
         }
       })
-      // console.log(res);
+      console.log(res);
       setUploader(res.data.result);
     } catch(error){
       console.log(error);
@@ -63,7 +69,7 @@ export default function Donwload() {
     try {
       const res = await axios.get(`${url}/search/category?category_name=${category_name}`)
       // console.log(res);
-      setPosts((prev) => res.data.result[0])
+      setPosts(res.data.result[0])
     } catch(error){
       console.log(error);
     }

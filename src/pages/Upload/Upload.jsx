@@ -5,11 +5,16 @@ import axios from 'axios'
 import { ReactComponent as UploadIcon } from "../../assets/images/icon_Image Upload.svg"
 import { useNavigate } from 'react-router-dom'
 import { categories } from './categories'
+import Loader from '../../components/Loader'
+import { useRecoilState } from 'recoil'
+import { loadingState } from '../../recoil/atom'
 
 export default function Upload() {
   const url = process.env.REACT_APP_API_URL;
   const token = window.localStorage.getItem('access_Token');
   
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
+
   const imageInput = useRef(null);
   const [imgURL, setImgURL] = useState(null);
   const [isDrag, setIsDrag] = useState(false);
@@ -132,6 +137,8 @@ export default function Upload() {
   })
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
+
     const tags = data.tag.map((item) => item.tag)
     console.log(data)
     const formData = new FormData();
@@ -142,7 +149,7 @@ export default function Upload() {
         category_id: data.category_id,
         title: data.title,
         explanation: data.explanation,
-        link: [...data.link],
+        link: [data.link],
         tag: tags,
       })
     )
@@ -165,10 +172,12 @@ export default function Upload() {
       })
       console.log(res)
       alert("업로드 성공!")
-      navigate(`/main`)
     } catch (error) {
       console.error(error)
       alert("업로드에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+      navigate(`/main`)
     }
   }
 
@@ -222,10 +231,6 @@ export default function Upload() {
                     )
                   })}
                 </Select>
-                {/* <Input id='category_id' 
-                  {...register('category_id',{
-                    required: true
-                  })}/> */}
               </Label>
               <Label>
                 제목
