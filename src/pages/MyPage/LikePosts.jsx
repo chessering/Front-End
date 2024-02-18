@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import MyLists from "./MyLists.jsx";
 import Pgnation from "./Pgnation";
 import styled from "styled-components";
@@ -42,14 +43,6 @@ const StyledList = styled.div`
 
 function LikePosts() {
 
-    const dummyposts=[
-        {postId : 1, title : 2, author : 33, date : 11, like : 44},
-        {postId : 2, title : 3, author : 33, date : 11, like : 44},
-        {postId : 3, title : 4, author : 33, date : 11, like : 44},
-        {postId : 4, title : 5, author : 33, date : 11, like : 44},
-        {postId : 5, title : 6, author : 33, date : 11, like : 44},
-        {postId : 6, title : 7, author : 33, date : 11, like : 44},
-    ]
     const [clicked, setClicked] = useState(false);
     const [checked, setChecked] = useState(false);
     const [checkItems, setCheckItems] = useState(new Set);
@@ -77,18 +70,31 @@ function LikePosts() {
           console.log(checkItems)
         }
       }
-    //추후 api 받아온 정보로 교체할 예정
-    // const token = localStorage.getItem('access_Token');
+
+      const [postInfo, setPostInfo] = useState([]);
+      const token = localStorage.getItem('access_Token');
+      console.log(token);
+    
+      async function handlePostInfo(){
+          await axios({
+              url : `${process.env.REACT_APP_API_URL}/mypages/liked_posting`,
+              method: 'GET',
+              headers : {
+                  'authorization' : `${token}`
+              }
+          })
+          .then(response => {
+              console.log(response);
+              setPostInfo(response.data.result);
+          })
+          .catch(error => {
+              console.error(error);
+          });
   
-	// async function handlePostInfo(){
-    //     const result = await axios({
-    //         url : `${process.env.REACT_APP_API_URL}/mypages/liked_posting`,
-    //         method: 'GET',
-    // headers : {
-    //     'authorization' : `${token}`
-    // }
-    //     })
-    // }
+      }
+      useEffect(() =>{
+        handlePostInfo()
+    },[])
 
 
     function SubmitPostInfo() {
@@ -97,15 +103,15 @@ function LikePosts() {
         const JsonArray = array.map(item => ({"post_id" : item}));
         const postresult = JSON.stringify(JsonArray);
 
-        // const submitpost = axios.post({
-            // url = `${process.env.REACT_APP_API_URL}/mypages/liked_posting/modify`,
-            // headers : {
-            // 'authorization' : `${token}`
-            // },
-            // body : {
-            //     postresult
-            // }
-        // })
+        axios.post({
+            url : `${process.env.REACT_APP_API_URL}/mypages/posting/modify`,
+            headers : {
+            'authorization' : `${token}`
+            },
+            body : {
+                postresult
+            }
+        })
     }
 
     const [page, setPage] = useState(1);
@@ -113,23 +119,17 @@ function LikePosts() {
     const limit = 10; // 한 페이지의 post 최대갯수
     const offset = (page - 1) * limit;
 
-    const postsData = (dummyposts) => {
-        if(dummyposts){
-            let result = dummyposts.slice(offset, offset + limit);
-            return result;
-        }
-    }
-
-    const postlist = dummyposts.map((post, index) => (<StyledList key={index} even = {index % 2 === 0}>
+    const postlist = Array.isArray(postInfo) && postInfo.slice(offset, offset + limit).map((postInfo, index) => (
+    <StyledList key={index} even = {index % 2 === 0}>
         <div className="flex flex-row flex-wrap justify-between w-12/12 align-baseline">
             {(clicked) &&
-                <input id={post.postId} type="checkbox" onClick={(e) => checkHandled(e)} />
+                <input id={postInfo.post_id} type="checkbox" onClick={(e) => checkHandled(e)} />
             }
-            <div className="flex mr-32 ml-12 pt-2.5 justify-center items-center text-center">{post.postId}</div>
-            <div className="flex mr-40 pt-2.5 justify-center items-center text-center">{post.title}</div>
-            <div className="flex mr-32 pt-2.5 justify-center items-center text-center">{post.author}</div>
-            <div className="flex mr-32 pt-2.5 justify-center items-center text-center">{post.date}</div>
-            <div className="flex mr-12 pt-2.5 justify-center items-center text-center">{post.like}</div>
+            <div className="flex mr-32 ml-12 pt-2.5 justify-center items-center text-center">{postInfo.post_id}</div>
+            <div className="flex mr-40 pt-2.5 justify-center items-center text-center">{postInfo.title}</div>
+            <div className="flex mr-32 pt-2.5 justify-center items-center text-center">{postInfo.user_id}</div>
+            <div className="flex mr-32 pt-2.5 justify-center items-center text-center">{postInfo.createdAt}</div>
+            <div className="flex mr-12 pt-2.5 justify-center items-center text-center">{postInfo.like_count}</div>
             
         </div>
 
@@ -164,7 +164,7 @@ function LikePosts() {
                 </div>
                 <StyledList>
                         {postlist}
-                        <Pgnation limit={limit} page={page} totalPosts={dummyposts.length} setPage={setPage}/>
+                        <Pgnation limit={limit} page={page} totalPosts={postInfo.length} setPage={setPage}/>
                 </StyledList>
             </div>
         </div>
