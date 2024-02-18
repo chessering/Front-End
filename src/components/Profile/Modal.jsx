@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 import { ReactComponent as Close } from "../../assets/images/icon_Close.svg"
 import { ReactComponent as Search } from "../../assets/images/icon_Search.svg"
-import { UploaderWrap, UserWrap, UserIDWrap, ProfileImg, UserID, Followers, Like } from '../Download/ImgInfo';
+import { UploaderWrap, UserWrap, UserIDWrap, ProfileImg, UserID, Followers, Follow } from '../Download/ImgInfo';
 
 export default function Modal({ title }) {
   const [searchingId, setSearchingId] = useState('')
@@ -22,7 +22,7 @@ export default function Modal({ title }) {
                 <Name>이름</Name>
               </UserIDWrap>
             </UserWrap>
-            <Like>삭제</Like>
+            <Follow>삭제</Follow>
           </ResultWrap>
         )
     }
