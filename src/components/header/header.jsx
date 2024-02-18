@@ -39,6 +39,12 @@ export default function Header() {
     setTab('home');
     navigate('/main');
   };
+
+  const handleaboutClick = () => {
+    setTab('aboute');
+    navigate('/About');
+  };
+
   const [tab, setTab] = useState('vote');
 
   return (
@@ -58,7 +64,7 @@ export default function Header() {
             </button>
             <button
               className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'about' ? 'active border-b border-[#767676]' : ''}`}
-              onClick={() => setTab('about')}
+              onClick={handleaboutClick}
             >
               about
             </button>
