@@ -21,18 +21,20 @@ import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
+import ScrollToTop from './components/ScrollToTop';
 // 수정: 로그인  / 라우팅 > mainpage /mainpage 로 라우팅 수정
 
 
 function App() {
   return (
     <div>
+      <ScrollToTop/>
       <Routes>
         <Route element={<Layout />}>
           {/* <Route path='/' element={<Mainpage/>}/> */}
 
           <Route path='/main' element={<Mainpage/>}/>
-          <Route path='/Category' element={<Category/>}/>
+          <Route path='/Category/:postid' element={<Category/>}/>
           <Route path='/Popular' element={<Popular/>}/>
           <Route path='/Category_Popular' element={<Category_Popular/>}/>
 
