@@ -266,7 +266,7 @@ useEffect(()=>{
                                   src={filteredResult.img_url}
                                   alt={filteredResult.title}
                                   onClick={()=>gotoDownLoad(filteredResult.post_id)}
-                                  className="w-20 h-20 object-cover"
+                                  className="w-20 h-20 object-cover flex items-center justify-center rounded-lg bg-gray-200"
                                 />
                               </li>
                             ))}
@@ -340,7 +340,7 @@ useEffect(()=>{
                       >
                         <img
                           src={post.img_url}
-                          onClick={()=>gotoDownLoad(cataWallpapers.post_id)}
+                          onClick={()=>gotoDownLoad(post.post_id)}
                           alt={post.title}
                           className="object-cover object-center w-full h-full rounded-lg"
                         />
