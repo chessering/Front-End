@@ -4,9 +4,7 @@ import { useQuery } from 'react-query';
 import { getpopularWallpapers } from '../../services/api';
 import { useNavigate } from 'react-router';
 
-
 // 인기 바탕화면 페이지
-
 
 export default function Category_Popular() {
     const { isLoading, data : popWall} = useQuery({
