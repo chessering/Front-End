@@ -1,32 +1,15 @@
 import React, { useEffect } from 'react';
-import { Fragment } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { getAllCategory } from '../../services/api';
+import { useRecoilState } from 'recoil';
+import { loadingState } from '../../recoil/atom';
 
 
 // 카테고리 페이지
 
-const images = [
-    { src: 'https://via.placeholder.com/300x200/CCCCCC/FFFFFF', alt: 'Image 1' },
-    { src: 'https://via.placeholder.com/300x200/BBBBBB/FFFFFF', alt: 'Image 2' },
-    { src: 'https://via.placeholder.com/300x200/AAAAAA/FFFFFF', alt: 'Image 3' },
-    { src: 'https://via.placeholder.com/300x200/999999/FFFFFF', alt: 'Image 4' },
-    { src: 'https://via.placeholder.com/300x200/888888/FFFFFF', alt: 'Image 5' },
-    { src: 'https://via.placeholder.com/300x200/777777/FFFFFF', alt: 'Image 6' },
-    { src: 'https://via.placeholder.com/300x200/666666/FFFFFF', alt: 'Image 7' },
-    { src: 'https://via.placeholder.com/300x200/555555/FFFFFF', alt: 'Image 8' },
-    { src: 'https://via.placeholder.com/300x200/CCCCCC/FFFFFF', alt: 'Image 1' },
-    { src: 'https://via.placeholder.com/300x200/BBBBBB/FFFFFF', alt: 'Image 2' },
-    { src: 'https://via.placeholder.com/300x200/AAAAAA/FFFFFF', alt: 'Image 3' },
-    { src: 'https://via.placeholder.com/300x200/999999/FFFFFF', alt: 'Image 4' }
-];
-
-
 export default function Category() {
+    const [ _isLoading, setIsLoading ] = useRecoilState(loadingState);
     const { isLoading, data : allCategory } = useQuery({
         queryKey: ["allCategory"],
         queryFn: () => getAllCategory(),
@@ -40,11 +23,12 @@ export default function Category() {
     useEffect(()=>{
         console.log(allCategory);
     },[isLoading])
-    if (isLoading) {
-        return (
-            <div>로딩 중..</div>
-        )
-    }
+    if(isLoading){
+        setIsLoading(true);
+      }
+      else{
+        setIsLoading(false);
+      }
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mx-auto grid text-left">

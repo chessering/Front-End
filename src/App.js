@@ -26,7 +26,6 @@ import Loader from './components/Loader';
 import { useRecoilState } from 'recoil';
 import { loadingState } from './recoil/atom';
 
-
 function App() {
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
 
@@ -50,6 +49,7 @@ function App() {
           <Route path='Category/:postid' element={<Category/>}/>
           <Route path='Popular' element={<Popular/>}/>
           <Route path='Category_Popular' element={<Category_Popular/>}/>
+
           <Route path='download/:postid' element={<Download/>}/>
           <Route path='profile/:userid' element={<UserProfile/>}/>
           <Route path='upload' element={<Upload/>}/>

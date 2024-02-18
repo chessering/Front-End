@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import  mainpageServices  from '../../services/mainpage';
 import { useQuery } from 'react-query';
 import { getpopularWallpapers } from '../../services/api';
 import { useNavigate } from 'react-router';
+import { useRecoilState } from 'recoil';
+import { loadingState } from '../../recoil/atom';
 
 // 인기 바탕화면 페이지
 
 export default function Category_Popular() {
+    const [ _isLoading, setIsLoading ] = useRecoilState(loadingState);
     const { isLoading, data : popWall} = useQuery({
         queryKey: ["popWall"],
         queryFn: () => getpopularWallpapers(),
@@ -18,12 +20,18 @@ export default function Category_Popular() {
     }
     useEffect(()=>{
         console.log(popWall);
+        // setIsLoading(true);
     },[])
-    if (isLoading) {
-        return (
-            <div>로딩 중..</div>
-        )
-    }
+    // useEffect(()=>{
+    //     setIsLoading(false);
+    // },[popWall])
+
+    if(isLoading){
+        setIsLoading(true);
+      }
+      else{
+        setIsLoading(false);
+      }
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mx-auto grid text-left">
