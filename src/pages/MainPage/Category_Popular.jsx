@@ -33,7 +33,6 @@ export default function Category_Popular() {
   }
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
                   <div className="flex mt-9 items-center">
                         <span className="text-2xl text-[#21272A] font-semibold mr-4">인기 카테고리</span>
                     </div>

@@ -1,42 +1,53 @@
-import React from 'react';
+import React from "react";
 import { Fragment } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { getSearchByTitle } from '../../services/mainpage';
-import { getSearchByCategory } from '../../services/mainpage';
-import { getSearchPageByNickname } from '../../services/mainpage';
-import { getCategory } from '../../services/mainpage';
-import { getCategory_Popular } from '../../services/mainpage';
-import { getPopular } from '../../services/mainpage';
-import Search from './Search';
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getSearchByTitle } from "../../services/mainpage";
+import { getSearchByCategory } from "../../services/mainpage";
+import { getSearchPageByNickname } from "../../services/mainpage";
+import { getCategory } from "../../services/mainpage";
+import { getCategory_Popular } from "../../services/mainpage";
+import { getPopular } from "../../services/mainpage";
+import Search from "./Search";
+import { useQuery } from 'react-query';
+import { getpopularWallpapers } from '../../services/api';
 
-
-// 카테고리 드롭다운 
+// 카테고리 드롭다운
 const resources = [
   {
-    name: "제목"
+    name: "제목",
   },
   {
-    name: "카테고리"
+    name: "카테고리",
   },
   {
-    name: "작성자"
+    name: "작성자",
   },
-
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
 export default function Mainpage() {
+
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState('제목'); // 검색 유형 상태 추가
+  const { iisLoading, data : popWall} = useQuery({
+    queryKey: ["popWall"],
+    queryFn: () => getpopularWallpapers(),
+    refetchOnWindowFocus: false,
+})
+const gotoDownLoad = (post_id) => {
+    navigate(`/download/${post_id}`);
+}
+useEffect(()=>{
+    console.log(popWall);
+},[])
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchType, setSearchType] = useState("제목"); // 검색 유형 상태 추가
   const [searchResults, setSearchResults] = useState([]);
 
   const [popularWallpapers, setPopularWallpapers] = useState(null);
@@ -44,58 +55,68 @@ export default function Mainpage() {
   const [isError, setIsError] = useState(false);
   const [cataWallpapers, setCataWallpapers] = useState(null);
 
+  const [searchResultData, setSearchResultData] = useState(null);
 
-  // useEffect(() => {
-  //   if (searchTerm) {
-  //     getSearchByTitle(searchTerm)
-  //       .then(data => {
-  //         console.log("받아온 데이터:", data);
-  //         setSearchResults(data.result);
-  //       })
-  //       .catch(error => {
-  //         console.error('검색 중 오류 발생:', error);
-  //       });
-  //   }
-  // }, [searchTerm]);
-
-  
-  useEffect(() => {
-    if (!searchTerm.trim()) return; // 검색어가 비어있으면 API 호출 중단
-
-    const fetchSearchResults = async () => {
-      try {
-        let data;
-        if (searchType === '제목') {
-          data = await getSearchByTitle(searchTerm);
-          console.log(data);
-        } else if (searchType === '카테고리') {
-          data = await getSearchByCategory(searchTerm);
-        } else if (searchType === '작성자') {
-          data = await getSearchPageByNickname(searchTerm);
-        } else {
-          console.log('알 수 없는 검색 유형:', searchType);
-          return;
-        }
-        setSearchResults(data.result); // 검색 결과 저장
-      } catch (error) {
-        console.error(`${searchType} 검색 중 오류 발생:`, error);
+  const fetchSearchResults = async () => {
+    try {
+      let data;
+      if (searchType === "제목") {
+        console.log("찾으려는 값", searchTerm);
+        data = await getSearchByTitle(searchTerm);
+        setSearchResultData(data);
+        console.log("제목 검색", data);
+      } else if (searchType === "카테고리") {
+        data = await getSearchByCategory(searchTerm);
+        setSearchResultData(data);
+        console.log("카테고리 검색", data);
+      } else if (searchType === "작성자") {
+        data = await getSearchPageByNickname(searchTerm);
+        console.log("작성자 검색", data);
+        setSearchResultData(data);
+      } else {
+        console.log("알 수 없는 검색 유형:", searchType);
+        return;
       }
-    };
-
-    fetchSearchResults();
-  }, [searchTerm, searchType]);
+      setSearchResults(data.result); // 검색 결과 업데이트
+    } catch (error) {
+      console.error(`${searchType} 검색 중 오류 발생:`, error);
+      setSearchResultData(null);
+    }
+  };
 
   const handlePopularClick = () => {
-    navigate('/Popular');
+    navigate("/Popular");
   };
   const handleCategoryPopularClick = () => {
-    navigate('/Category_Popular');
+    navigate("/Category_Popular");
   };
   const handleCategoryClick = () => {
-    navigate('/Category');
+    navigate("/Category");
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // 양식이 제출될 때 검색 API 호출
+    fetchSearchResults();
+  };
 
+  // 검색어 입력 이벤트 핸들러
+  const handleSearchInputChange = (e) => {
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+
+    if (!newSearchTerm) {
+      setSearchResults(null);
+      setSearchResultData(null);
+    }
+  };
+
+  // 검색 조건 설정
+  const handleSearchTypeChange = (name) => {
+    setSearchResultData(null);
+    setSearchType(name);
+    fetchSearchResults();
+  };
 
   //popularWallpapers
   useEffect(() => {
@@ -134,7 +155,6 @@ export default function Mainpage() {
       });
   }, []);
 
-
   if (isLoading) {
     return <div>로딩중...</div>;
   }
@@ -143,13 +163,6 @@ export default function Mainpage() {
     return <div>에러 발생</div>;
   }
 
-
-  // 검색 기능
-  const handleSearchTypeChange = (name) => {
-    setSearchType(name);
-  };
-
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mx-auto grid text-center">
@@ -157,7 +170,9 @@ export default function Mainpage() {
           <div className="bg-white">
             <div className="mx-auto max-w-7xl px-4 p-10 sm:px-6 lg:px-8">
               <div className="text-center w-full">
-                <h2 className="text-2xl text -[#21272A]  p-10  font-semibold">찾고싶은 배경화면을 편하게 찾으세요.<br /> Draw Desktop
+                <h2 className="text-2xl text -[#21272A]  p-10  font-semibold">
+                  찾고싶은 배경화면을 편하게 찾으세요.
+                  <br /> Draw Desktop
                 </h2>
                 {/* <Search /> */}
 
@@ -196,109 +211,149 @@ export default function Mainpage() {
                               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                                 <div className="relative grid gap-6 bg-white px-3 py-6 sm:gap-8 sm:p-8">
                                   {resources.map((item) => (
-                                    <p key={item.name}
-                                      onClick={() => handleSearchTypeChange(item.name)}
-                                      className="text-base font-medium text-gray-900">
+                                    <p
+                                      key={item.name}
+                                      onClick={() =>
+                                        handleSearchTypeChange(item.name)
+                                      }
+                                      className="text-base font-medium text-gray-900"
+                                    >
                                       {item.name}
                                     </p>
                                   ))}
                                 </div>
                               </div>
                             </Popover.Panel>
-
                           </Transition>
-
                         </>
                       )}
-
                     </Popover>
 
-
-                    <form className="flex items-center relative" >
-                      <MagnifyingGlassIcon className="items-center pointer-events-none absolute left-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <form
+                      className="flex items-center relative"
+                      onSubmit={handleSearchSubmit}
+                    >
+                      <MagnifyingGlassIcon
+                        className="items-center pointer-events-none absolute left-3 h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
                       <input
                         id="search-field"
                         className="block w-[655px] bg-[#ECECEC] text-lg rounded-full pl-10 pr-3 py-2 text-[#A5A5A5] placeholder:text-[#A5A5A5] focus:outline-none focus:ring-0"
                         placeholder="이미지 검색"
                         type="search"
                         name="search"
+                        value={searchTerm}
+                        onChange={handleSearchInputChange}
                       />
                     </form>
+
                     <div className="search-results mt-4">
-                      {searchResults.length > 0 ? (
+                      {searchTerm && searchResults && searchResults.length > 0 ? (
                         <ul>
-                          {searchResults.filter(result => result.title.includes(searchTerm)).map((filteredResult) => (
-                            <li key={filteredResult.post_id} className="mb-2">
-                              <div className="result-title font-semibold">{filteredResult.title}</div>
-                              <img src={filteredResult.img_url} alt={filteredResult.title} className="w-20 h-20 object-cover" />
-                            </li>
-                          ))}
+                          {searchResults
+                            .filter(
+                              (result) =>
+                                result.title &&
+                                result.title.includes(searchTerm)
+                            )
+                            .map((filteredResult) => (
+                              <li key={filteredResult.post_id} className="mb-2">
+                                <div className="result-title font-semibold">
+                                  {filteredResult.title}
+                                </div>
+                                <img
+                                  src={filteredResult.img_url}
+                                  alt={filteredResult.title}
+                                  onClick={()=>gotoDownLoad(filteredResult.post_id)}
+                                  className="w-20 h-20 object-cover"
+                                />
+                              </li>
+                            ))}
                         </ul>
                       ) : (
                         <div></div>
-                      )
-                      }
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
-
-
           </div>
-
         </main>
       </div>
-      {/* 인기 바탕화면 */}
-      <section className="mt-8 mb-8">
-        <h2 onClick={handlePopularClick} className="text-2xl text-[#21272A] font-semibold">인기 바탕화면</h2>
-        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
-          {popularWallpapers &&
-            popularWallpapers.slice(0, 8).map((wallpaper, index) => (
-              <div
-                key={index}
-                className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200"
-              >
-                <img
-                  src={wallpaper.img_url}
-                  alt={wallpaper.title}
-                  className="object-cover object-center w-full h-full rounded-lg"
-                />
-              </div>
-            ))}
-        </div>
-        {/* 카테고리 */}
-
-      </section>
-      <section className="mt-8 mb-8">
-        <h2 onClick={handleCategoryPopularClick} className="text-2xl items-center mb-4 text-[#21272A] font-semibold">인기 카테고리</h2>
-        {/* <div className="flex mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8"> */}
-
-        {cataWallpapers && cataWallpapers.map((category, index) => (
-          <div key={index} className="mt-8 mb-8">
-            <div className="flex items-center">
-              <h2 className="text-2xl text-[#21272A] font-semibold">{category.category_name}</h2>
-              <button
-                className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none"
-              // onClick={() => handleMoreClick(category.category_id)} // 예를 들어, 더보기 버튼을 클릭했을 때 특정 동작을 수행하도록 이벤트 핸들러를 추가할 수 있습니다.
-              >
-                더보기
-              </button>
-            </div>
+      {!searchResultData && (
+        <>
+          <section className="mt-8 mb-8">
+            <h2
+              onClick={handlePopularClick}
+              className="text-2xl text-[#21272A] font-semibold"
+            >
+              인기 바탕화면
+            </h2>
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
-              {category.post.map((post, idx) => (
-                <div key={idx} className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200">
-                  <img src={post.img_url} alt={post.title} className="object-cover object-center w-full h-full rounded-lg" />
+              {popularWallpapers &&
+                popularWallpapers.slice(0, 8).map((wallpaper, index) => (
+                  <div
+                    key={index}
+                    className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200"
+                  >
+                    <img
+                      src={wallpaper.img_url}
+                      alt={wallpaper.title}
+                      onClick={()=>gotoDownLoad(wallpaper.post_id)}
+                      className="object-cover object-center w-full h-full rounded-lg"
+                    />
+                  </div>
+                ))}
+            </div>
+            {/* 카테고리 */}
+          </section>
+          <section className="mt-8 mb-8">
+            <h2
+              onClick={handleCategoryPopularClick}
+              className="text-2xl items-center mb-4 text-[#21272A] font-semibold"
+            >
+              인기 카테고리
+            </h2>
+            {/* <div className="flex mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8"> */}
+
+            {cataWallpapers &&
+              cataWallpapers.map((category, index) => (
+                <div key={index} className="mt-8 mb-8">
+                  <div className="flex items-center">
+                    <h2 className="text-2xl text-[#21272A] font-semibold">
+                      {category.category_name}
+                    </h2>
+                    <button
+                      className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none"
+                      // onClick={() => handleMoreClick(category.category_id)} // 예를 들어, 더보기 버튼을 클릭했을 때 특정 동작을 수행하도록 이벤트 핸들러를 추가할 수 있습니다.
+                    >
+                      더보기
+                    </button>
+                  </div>
+                  <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
+                    {category.post.map((post, idx) => (
+                      <div
+                        key={idx}
+                        className="aspect-w-6 aspect-h-4 w-full overflow-hidden rounded-lg bg-gray-200"
+                      >
+                        <img
+                          src={post.img_url}
+                          onClick={()=>gotoDownLoad(cataWallpapers.post_id)}
+                          alt={post.title}
+                          className="object-cover object-center w-full h-full rounded-lg"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
-            </div>
-          </div>
-        ))}
-        {/* 
-        </div> */}
-
-      </section>
+            {/* 
+                          </div> */}
+          </section>
+        </>
+      )}
     </div>
   );
 }
