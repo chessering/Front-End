@@ -18,6 +18,7 @@ import { useRecoilState } from "recoil";
 import { loadingState } from "../../recoil/atom";
 
 
+
 // 카테고리 드롭다운
 const resources = [
   {
@@ -31,24 +32,28 @@ const resources = [
   },
 ];
 
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Mainpage() {
-
   const navigate = useNavigate();
-  const { iisLoading, data : popWall} = useQuery({
+  const { iisLoading, data: popWall } = useQuery({
     queryKey: ["popWall"],
     queryFn: () => getpopularWallpapers(),
     refetchOnWindowFocus: false,
-})
-const gotoDownLoad = (post_id) => {
+  })
+  const gotoDownLoad = (post_id) => {
     navigate(`/download/${post_id}`);
-}
-useEffect(()=>{
+  }
+  const gototheLoad = (post_id) => {
+    navigate(`/Category/${post_id}`);
+  }
+
+  useEffect(() => {
     console.log(popWall);
-},[])
+  }, [])
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("제목"); // 검색 유형 상태 추가
   const [searchResults, setSearchResults] = useState([]);
@@ -93,9 +98,7 @@ useEffect(()=>{
   const handleCategoryPopularClick = () => {
     navigate("/Category_Popular");
   };
-  const handleCategoryClick = () => {
-    navigate("/Category");
-  };
+
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -264,7 +267,7 @@ useEffect(()=>{
                                 <img
                                   src={filteredResult.img_url}
                                   alt={filteredResult.title}
-                                  onClick={()=>gotoDownLoad(filteredResult.post_id)}
+                                  onClick={() => gotoDownLoad(filteredResult.post_id)}
                                   className="w-20 h-20 object-cover flex items-center justify-center rounded-lg bg-gray-200"
                                 />
                               </li>
@@ -300,7 +303,7 @@ useEffect(()=>{
                     <img
                       src={wallpaper.img_url}
                       alt={wallpaper.title}
-                      onClick={()=>gotoDownLoad(wallpaper.post_id)}
+                      onClick={() => gotoDownLoad(wallpaper.post_id)}
                       className="object-cover object-center w-full h-full rounded-lg"
                     />
                   </div>
@@ -324,12 +327,15 @@ useEffect(()=>{
                     <h2 className="text-2xl text-[#21272A] font-semibold">
                       {category.category_name}
                     </h2>
+
                     <button
                       className="ml-5 border border-gray-200 rounded-lg px-5 py-1 text-lg font-medium text-gray-500 hover:text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none"
-                      // onClick={() => handleMoreClick(category.category_id)} // 예를 들어, 더보기 버튼을 클릭했을 때 특정 동작을 수행하도록 이벤트 핸들러를 추가할 수 있습니다.
+                      onClick={() => gototheLoad(category.category_id)}
+                    // 예를 들어, 더보기 버튼을 클릭했을 때 특정 동작을 수행하도록 이벤트 핸들러를 추가할 수 있습니다.
                     >
                       더보기
                     </button>
+
                   </div>
                   <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
                     {category.post.map((post, idx) => (
@@ -339,7 +345,7 @@ useEffect(()=>{
                       >
                         <img
                           src={post.img_url}
-                          onClick={()=>gotoDownLoad(post.post_id)}
+                          onClick={() => gotoDownLoad(post.post_id)}
                           alt={post.title}
                           className="object-cover object-center w-full h-full rounded-lg"
                         />
