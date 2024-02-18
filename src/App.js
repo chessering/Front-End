@@ -23,7 +23,6 @@ import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
 import ScrollToTop from './components/ScrollToTop';
 
-
 function App() {
   return (
     <div>
@@ -44,6 +43,7 @@ function App() {
           <Route path='Category/:postid' element={<Category/>}/>
           <Route path='Popular' element={<Popular/>}/>
           <Route path='Category_Popular' element={<Category_Popular/>}/>
+
           <Route path='download/:postid' element={<Download/>}/>
           <Route path='profile/:userid' element={<UserProfile/>}/>
           <Route path='upload' element={<Upload/>}/>
