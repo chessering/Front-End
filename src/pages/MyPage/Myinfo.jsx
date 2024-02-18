@@ -38,9 +38,11 @@ function Myinfo() {
         name : '',
         email : '',
         introduction : '',
-        img : "",
+        profile_img : "",
     })
+
     const token = localStorage.getItem('access_Token');
+    console.log(token);
 
     useEffect(() => {
         const fetchData = async () => {

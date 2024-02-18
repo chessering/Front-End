@@ -66,8 +66,7 @@ function MyInfoModify() {
     const [imageSrc, setImageSrc] = useState('');
 
     const token = localStorage.getItem('access_Token');
-    // console.log(token);
-    // console.log(localStorage);
+    console.log(token);
 
     //정보 불러오기
     useEffect(() => {
@@ -90,39 +89,41 @@ function MyInfoModify() {
     }, [])
 
     const onChange = (e) => {
-        setUserInfo({
+        const { name, value } = e.target;
+        console.log(e.target.name);
+        console.log(e.target.value);
+        setUserInfo((userInfo) => ({
             ...userInfo,
-            [e.target.name]: e.target.value
-        });
+            [name]: value
+        }));
+        console.log(userInfo);
     };
 
     //변경된 정보 제출하기
     const OnSubmit = (e) => {
         
-        useEffect(() => {
-            const submitInfo = axios.post(`${process.env.REACT_APP_API_URL}/mypages/profile/modify`, {
-                headers : {
-                    'authorization' : `${token}`
+        axios.post(`${process.env.REACT_APP_API_URL}/mypages/profile/modify`, {
+            headers : {
+                'authorization' : `${token}`
+            },
+            body : {
+                data : {
+                    nickname : userInfo.id,
+                    name : userInfo.name,
+                    email : userInfo.email,
+                    introduction : userInfo.introduction,
                 },
-                body : {
-                    data : {
-                        nickname : userInfo.id,
-                        name : userInfo.name,
-                        email : userInfo.email,
-                        introduction : userInfo.introduction,
-                    },
-                    image : imageSrc
+                image : imageSrc
 
-                }
-            })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-            submitInfo();
-        },[])
+            }
+        })
+        .then(response => {
+            console.log(response);
+            console.log(imageSrc);
+        })
+        .catch(error => {
+            console.log(error);
+        })
 
         Swal.fire({
             icon : "success",
@@ -147,7 +148,7 @@ function MyInfoModify() {
           };
         });
       };
-      console.log(imageSrc);
+
     return (
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6 mx-auto">
             <MyLists/>
@@ -173,13 +174,13 @@ function MyInfoModify() {
                 </div>
                 <div className="flex mt-20 ml-16 justify-center flex-col">
                     <div className="mb-2 font-normal">ID</div>
-                    <Container1 defaultValue = {userInfo.nickname} onChange={onChange}></Container1>
+                    <Container1 name="nickname" defaultValue = {userInfo.nickname} onChange={onChange}></Container1>
                     <div className="mb-2 font-normal">이름</div>
-                    <Container1 defaultValue = {userInfo.name} onChange={onChange}></Container1>
+                    <Container1 name="name" defaultValue = {userInfo.name} onChange={onChange}></Container1>
                     <div className="mb-2 font-normal">Email</div>
-                    <Container1 defaultValue = {userInfo.email} onChange={onChange}></Container1>
+                    <Container1 name="email" defaultValue = {userInfo.email} onChange={onChange}></Container1>
                     <div className="mb-2 font-normal">소개</div>
-                    <Container2 defaultValue = {userInfo.introduction} onChange={onChange}></Container2>
+                    <Container2 name="introduction" defaultValue = {userInfo.introduction} onChange={onChange}></Container2>
                 </div>
             </div>
             <StyledButton onClick = {OnSubmit}>변경사항 저장</StyledButton>
