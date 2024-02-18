@@ -21,11 +21,13 @@ import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
+import ScrollToTop from './components/ScrollToTop';
 
 
 function App() {
   return (
     <div>
+      <ScrollToTop/>
       <Routes>
         {/* 로그인 페이지에만 HeaderLayout 적용 */}
         <Route path='/' element={<LoginLayout />}>
@@ -36,7 +38,7 @@ function App() {
         {/* 나머지 페이지에는 Layout 적용 */}
         <Route path='/' element={<Layout />}>
           <Route path='main' element={<Mainpage/>}/>
-          <Route path='Category' element={<Category/>}/>
+          <Route path='Category/:postid' element={<Category/>}/>
           <Route path='Popular' element={<Popular/>}/>
           <Route path='Category_Popular' element={<Category_Popular/>}/>
           <Route path='auth' element={<Auth/>}/>
