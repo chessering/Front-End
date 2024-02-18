@@ -27,6 +27,7 @@ import Loader from './components/Loader';
 import { useRecoilState } from 'recoil';
 import { loadingState } from './recoil/atom';
 
+
 function App() {
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
 
