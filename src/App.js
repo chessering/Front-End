@@ -37,7 +37,10 @@ function App() {
       <Routes>
         {/* 로그인 페이지에만 HeaderLayout 적용 */}
         <Route path='/' element={<LoginLayout />}>
+        <Route path='auth' element={<Auth/>}/>
+        <Route path='authcomplete' element={<CompleteAuth/>}/>
           <Route index element={<Login/>}/>
+
         </Route>
 
 
@@ -47,8 +50,6 @@ function App() {
           <Route path='Category/:postid' element={<Category/>}/>
           <Route path='Popular' element={<Popular/>}/>
           <Route path='Category_Popular' element={<Category_Popular/>}/>
-          <Route path='auth' element={<Auth/>}/>
-          <Route path='authcomplete' element={<CompleteAuth/>}/>
           <Route path='download/:postid' element={<Download/>}/>
           <Route path='profile/:userid' element={<UserProfile/>}/>
           <Route path='upload' element={<Upload/>}/>

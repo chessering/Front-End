@@ -17,6 +17,7 @@ import { getpopularWallpapers } from '../../services/api';
 import { useRecoilState } from "recoil";
 import { loadingState } from "../../recoil/atom";
 
+
 // 카테고리 드롭다운
 const resources = [
   {
@@ -156,7 +157,7 @@ useEffect(()=>{
         setIsLoading(false);
       });
   }, []);
-  
+
   if (isError) {
     return <div>에러 발생</div>;
   }
