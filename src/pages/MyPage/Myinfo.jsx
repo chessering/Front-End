@@ -22,12 +22,15 @@ const Container1 = styled.div`
 `
 
 const Container2 = styled.div`
-    width: 662px;
-    height: 139px;
-    background: #F2F1F1;
-    border-radius: 7px;
-    padding: 6px;
-    margin-bottom : 38px;
+width: 662px;
+height: 129px;
+background: #F2F1F1;
+border-radius: 7px;
+padding: 10px;
+white-space: normal;
+vertical-align : 100%;
+line-height : 60px;
+margin-bottom : 30px;
 `
 
 function Myinfo() {
@@ -63,16 +66,6 @@ function Myinfo() {
     }, [])
 
     console.log(userInfo);
-    // useEffect(() => {
-    //     location.state = {
-    //         nickname : userInfo.nickname,
-    //         name : userInfo.name,
-    //         email : userInfo.email,
-    //         introduction : userInfo.introduction,
-    //     }
-    // }, []);
-
-    // console.log(location.state);
 
     return(
         <div className="flex flex-col justify-center items-center w-12/12 h-4/6">
