@@ -30,6 +30,7 @@ function Pgnation ({page, totalPosts, limit, setPage}){
                 onClick={() => {setPage(page-1); setCurrPage(page-2);}} 
                 active={page > 1}
                 disabled={page===0}
+                current={page >= 1 ? "page" : null}
                 >
                 이전
                 </PagingBtn>
@@ -52,10 +53,11 @@ function Pgnation ({page, totalPosts, limit, setPage}){
                         )
                     }
                 })}
-                {!(page === numPages || numPages === 1) && <PageBtn 
+                {!(page === numPages) && <PageBtn 
                     onClick={() => {setPage(page+1); setCurrPage(page);}} 
                     active={page < numPages}
-                    disabled={page>=numPages}>
+                    disabled={page>=numPages}
+                    current={page < numPages ? "page" : null}>
                     다음
                 </PageBtn>
                 }  

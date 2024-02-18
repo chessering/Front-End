@@ -44,21 +44,7 @@ const StyledList = styled.div`
 
 
 function MyPosts() {
-    const dummyposts=[
-        {postId : 1, title : 2, author : 33, date : 11, like : 44},
-        {postId : 1, title : 3, author : 33, date : 11, like : 44},
-        {postId : 1, title : 4, author : 33, date : 11, like : 44},
-        {postId : 1, title : 5, author : 33, date : 11, like : 44},
-        {postId : 1, title : 6, author : 33, date : 11, like : 44},
-        {postId : 1, title : 7, author : 33, date : 11, like : 44},
-        {postId : 1, title : 2, author : 33, date : 11, like : 44},
-        {postId : 1, title : 3, author : 33, date : 11, like : 44},
-        {postId : 1, title : 4, author : 33, date : 11, like : 44},
-        {postId : 1, title : 5, author : 33, date : 11, like : 44},
-        {postId : 1, title : 6, author : 33, date : 11, like : 44},
-        {postId : 1, title : 7, author : 33, date : 11, like : 44},
-        
-    ]
+
 
     const [clicked, setClicked] = useState(false);
     const [checked, setChecked] = useState(false);
@@ -88,7 +74,6 @@ function MyPosts() {
         }
       }
 
-    //추후 api 받아온 정보로 아래 코드로 교체할 예정
     const [postInfo, setPostInfo] = useState([]);
     const token = localStorage.getItem('access_Token');
     console.log(token);
@@ -114,24 +99,33 @@ function MyPosts() {
     useEffect(() =>{
         handlePostInfo()
     },[])
-
-    //이후 postinfo를 api 형식에 맞게 바꾸고 dummypost를 교체
     
     function SubmitPostInfo() {
 
         const array = Array.from(checkItems);
-        const JsonArray = array.map(item => ({"post_id" : item}));
-        const postresult = JSON.stringify(JsonArray);
 
-        axios.post({
-            url : `${process.env.REACT_APP_API_URL}/mypages/posting/modify`,
-            headers : {
-            'authorization' : `${token}`
+        axios.post(`${process.env.REACT_APP_API_URL}/mypages/posting/modify`,
+            {
+                post_id : array,
             },
-            body : {
-                postresult
-            }
+            {
+                headers : {
+                    'authorization' : `${token}`
+                }
+        
+            },
+            
+        )
+        .then(response => {
+            console.log(response);
+
+            setClicked(false);
+
         })
+        .catch(error => {
+            console.error(error);
+        });
+
     }
 
     const [page, setPage] = useState(1);
@@ -139,20 +133,11 @@ function MyPosts() {
     const limit = 10; // 한 페이지의 post 최대갯수
     const offset = (page - 1) * limit;
 
-
-    const postsData = (postInfo) => {
-        if (postInfo) {
-            return postInfo.slice(offset, offset + limit);
-        }
-        return [];
-    }
-    console.log(postInfo);
-
     const postlist = Array.isArray(postInfo) && postInfo.slice(offset, offset + limit).map((postInfo, index) => (
         <StyledList key={index} even = {index % 2 === 0}>
             <div className="flex flex-row flex-wrap justify-between w-12/12 align-baseline">
             {(clicked) &&
-                <input id={postInfo.postId} type="checkbox" onClick={(e) => checkHandled(e)} />
+                <input id={postInfo.post_id} type="checkbox" onClick={(e) => checkHandled(e)} />
             }
                 <div className="flex mr-32 ml-12 pt-2.5 justify-center items-center text-center">{postInfo.post_id}</div>
                 <div className="flex mr-40 pt-2.5 justify-center items-center text-center">{postInfo.title}</div>
