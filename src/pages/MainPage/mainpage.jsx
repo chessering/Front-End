@@ -14,6 +14,9 @@ import { getPopular } from "../../services/mainpage";
 import Search from "./Search";
 import { useQuery } from 'react-query';
 import { getpopularWallpapers } from '../../services/api';
+import { useRecoilState } from "recoil";
+import { loadingState } from "../../recoil/atom";
+
 
 // 카테고리 드롭다운
 const resources = [
@@ -51,7 +54,7 @@ useEffect(()=>{
   const [searchResults, setSearchResults] = useState([]);
 
   const [popularWallpapers, setPopularWallpapers] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
   const [isError, setIsError] = useState(false);
   const [cataWallpapers, setCataWallpapers] = useState(null);
 
@@ -154,10 +157,6 @@ useEffect(()=>{
         setIsLoading(false);
       });
   }, []);
-
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
 
   if (isError) {
     return <div>에러 발생</div>;
