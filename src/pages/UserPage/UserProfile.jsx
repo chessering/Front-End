@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import UserInfo from '../../components/Profile/UserInfo'
-import axios from 'axios'
 import styled from 'styled-components'
 import Photos from '../../components/Profile/Photos'
-import Pagination from '../../components/Profile/Pagination'
 import Pgnation from '../MyPage/Pgnation'
+import { useRecoilState } from 'recoil'
+import { loadingState } from '../../recoil/atom'
 
 export default function UserProfile() {
   const { userid } = useParams();
@@ -22,13 +22,15 @@ export default function UserProfile() {
       return result;
     }
   }
-
+  
   return (
-    <ProfileWrap>
-        <UserInfo profile={profile}></UserInfo>
-        <Photos posts={slicePosts(profile.post)}></Photos>
-        <Pgnation limit={limit} page={page} totalPosts={profile.post.length} setPage={setPage}></Pgnation>
-    </ProfileWrap>
+    <div>
+      <ProfileWrap>
+          <UserInfo profile={profile}></UserInfo>
+          <Photos posts={slicePosts(profile.post)}></Photos>
+          <Pgnation limit={limit} page={page} totalPosts={profile.post.length} setPage={setPage}></Pgnation>
+      </ProfileWrap>
+    </div>
   )
 }
 

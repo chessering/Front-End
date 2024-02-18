@@ -22,11 +22,17 @@ import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
 import ScrollToTop from './components/ScrollToTop';
+import Loader from './components/Loader';
+import { useRecoilState } from 'recoil';
+import { loadingState } from './recoil/atom';
 
 
 function App() {
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
+
   return (
     <div>
+      {(isLoading)&& <Loader/>}
       <ScrollToTop/>
       <Routes>
         {/* 로그인 페이지에만 HeaderLayout 적용 */}
