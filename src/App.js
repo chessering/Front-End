@@ -21,6 +21,7 @@ import LikePosts from "./pages/MyPage/LikePosts";
 import MyInfoModify from "./pages/MyPage/MyInfoModify";
 import NotFound from './pages/NotFound';
 import HelpDesk from './pages/HelpDesk';
+import About from "./pages/About";
 // 수정: 로그인  / 라우팅 > mainpage /mainpage 로 라우팅 수정
 
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='/likeposts' element={<LikePosts/>}/>
           <Route path='*' element={<NotFound/>}/>
           <Route path='/helpdesk' element={<HelpDesk/>}/>
+          <Route path='/about' element={<About/>}/>
         </Route>
       </Routes>
     </div>
