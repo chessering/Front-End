@@ -4,10 +4,14 @@ import axios from 'axios'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { ProfileBox, ProfileWrap } from '../Profile/UserInfo'
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { loadingState } from '../../recoil/atom';
 
 export default function ImgInfo( { image, uploader }) {
   const url = process.env.REACT_APP_API_URL
   const token = window.localStorage.getItem('access_Token');
+
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
 
   const [isMore, setIsMore]= useState(false);
   const [isLike, setIsLike] = useState(false);
@@ -16,13 +20,14 @@ export default function ImgInfo( { image, uploader }) {
   
   // 좋아요 여부 확인하기
   const checkLike = async () => {
+    setIsLoading(true)
     try {
       const res1 = await axios.post(`${url}/like/${image.post_id}`, null, {
         headers: {
           authorization: token
         },
       });
-      // console.log(res1.data);
+      console.log('Check Like...: ', res1.data);
       if(!res1.data.isSuccess) throw new Error('통신오류')
 
       const res2 = await axios.delete(`${url}/like/${image.post_id}`, {
@@ -30,23 +35,24 @@ export default function ImgInfo( { image, uploader }) {
           authorization: token
         },
       });
-      // console.log(res2.data);
+      console.log('Done!: ', res2.data);
       setIsLike(false)
     } catch (error) {
       setIsLike(true)
+    } finally {
+      setIsLoading(false);
     }
   };
 
   //좋아요 누르기 API
   const postLike = async () => {
-    console.log('Like')
     try {
       const res = await axios.post(`${url}/like/${image.post_id}`, null, {
         headers: {
           authorization: token
         },
       });
-      // console.log(res.data);
+      console.log('Like API: ', res.data);
       setIsLike(!isLike)
       if(!res.data.isSuccess) throw new Error('통신오류')
   } catch (error) {
@@ -56,14 +62,13 @@ export default function ImgInfo( { image, uploader }) {
 
 //좋아요 취소 API
   const postUnlike = async () => {
-    console.log('Unlike')
     try {
       const res = await axios.delete(`${url}/like/${image.post_id}`, {
         headers: {
           authorization: token
         },
       });
-      // console.log(res.data);
+      console.log('Unlike API: ', res.data);
       if(!res.data.isSuccess) throw new Error('통신오류')
       setIsLike(!isLike)
     } catch (error) {
@@ -334,7 +339,7 @@ export const ProfileImg = styled.img`
 `
 
 export const UserID = styled.div`
-  width: 54px;
+  width: auto;
   height: 25px;
 
   font-family: 'Pretendard Variable';
