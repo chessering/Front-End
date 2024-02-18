@@ -87,36 +87,38 @@ function MyInfoModify() {
         }
         fetchData();
     }, [])
-
+    
     const onChange = (e) => {
         const { name, value } = e.target;
         console.log(e.target.name);
         console.log(e.target.value);
-        setUserInfo((userInfo) => ({
-            ...userInfo,
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
             [name]: value
         }));
         console.log(userInfo);
     };
+    
 
     //변경된 정보 제출하기
     const OnSubmit = (e) => {
         
         axios.post(`${process.env.REACT_APP_API_URL}/mypages/profile/modify`, {
-            headers : {
-                'authorization' : `${token}`
-            },
-            body : {
-                data : {
-                    nickname : userInfo.id,
-                    name : userInfo.name,
-                    email : userInfo.email,
-                    introduction : userInfo.introduction,
-                },
-                image : imageSrc
 
+            nickname : userInfo.id,
+            name : userInfo.name,
+            email : userInfo.email,
+            introduction : userInfo.introduction,
+            image : imageSrc,
+            },
+
+            {
+                headers : {
+                    'authorization' : `${token}`
+                }
             }
-        })
+            
+        )
         .then(response => {
             console.log(response);
             console.log(imageSrc);

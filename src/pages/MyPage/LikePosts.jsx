@@ -80,7 +80,7 @@ function LikePosts() {
               url : `${process.env.REACT_APP_API_URL}/mypages/liked_posting`,
               method: 'GET',
               headers : {
-                  'authorization' : `${token}`
+                  'authorization' : token
               }
           })
           .then(response => {
@@ -100,18 +100,27 @@ function LikePosts() {
     function SubmitPostInfo() {
 
         const array = Array.from(checkItems);
-        const JsonArray = array.map(item => ({"post_id" : item}));
-        const postresult = JSON.stringify(JsonArray);
-
-        axios.post({
-            url : `${process.env.REACT_APP_API_URL}/mypages/posting/modify`,
-            headers : {
-            'authorization' : `${token}`
+        axios.post(`${process.env.REACT_APP_API_URL}/mypages/liked_posting/modify`,
+            {
+                post_id : array,
             },
-            body : {
-                postresult
-            }
+            {
+                headers : {
+                    'authorization' : `${token}`
+                }
+        
+            },
+            
+        )
+        .then(response => {
+            console.log(response);
+
+            setClicked(false);
+
         })
+        .catch(error => {
+            console.error(error);
+        });
     }
 
     const [page, setPage] = useState(1);
