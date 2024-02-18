@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Pgnation ({page, totalPosts, limit, setPage}){
     const numPages = Math.ceil(totalPosts/limit)
     const [currPage, setCurrPage] = useState(page)
+    const navigate = useNavigate();
     let firstNum = currPage - (currPage % 5) + 1
     let lastNum = currPage - (currPage % 5) + 5
     if (lastNum > numPages) {
         lastNum = numPages;
     }
+
+    // const navigateToForward = (num) => {
+    //     if (pathname === "/myposts/posting") {
+    //         setPage(num);
+    //         navigate(`/myposts/posting/${num}`)
+    //     }
+    //     else if (pathname === "/myposts/liked_posting") {
+    //         setPage(num);
+    //         navigate(`/myposts/liked_posting/${num}`)
+    //     }
+    // }
 
     return (
         <BtnWrap>
@@ -39,7 +52,7 @@ function Pgnation ({page, totalPosts, limit, setPage}){
                         )
                     }
                 })}
-                {!(page === numPages) && <PageBtn 
+                {!(page === numPages || numPages === 1) && <PageBtn 
                     onClick={() => {setPage(page+1); setCurrPage(page);}} 
                     active={page < numPages}
                     disabled={page>=numPages}>
