@@ -38,7 +38,7 @@ export default function Category() {
                             <span className="ml-4 text-lg text-[#6B6B6B]">
                                 {allCategory&&allCategory[parseInt(params.postid)-1].recent}
                                 /
-                                {allCategory&&allCategory.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0)}
+                                {allCategory&&allCategory[parseInt(params.postid)-1].count}
                             </span>
                         </span>
                         

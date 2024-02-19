@@ -24,12 +24,12 @@ const resources = [
   {
     name: "제목",
   },
-  {
-    name: "카테고리",
-  },
-  {
-    name: "작성자",
-  },
+  // {
+  //   name: "카테고리",
+  // },
+  // {
+  //   name: "작성자",
+  // },
 ];
 
 
@@ -52,7 +52,7 @@ export default function Mainpage() {
   }
 
   useEffect(() => {
-    console.log(popWall);
+    // console.log(popWall);
   }, [])
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("제목"); // 검색 유형 상태 추가
@@ -61,7 +61,7 @@ export default function Mainpage() {
   const [popularWallpapers, setPopularWallpapers] = useState(null);
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
   const [isError, setIsError] = useState(false);
-  const [cataWallpapers, setCataWallpapers] = useState(null);
+  const [ cataWallpapers, setCataWallpapers] = useState(null);
 
   const [searchResultData, setSearchResultData] = useState(null);
 
@@ -146,8 +146,10 @@ export default function Mainpage() {
     getCategory_Popular()
       .then((data) => {
         const result = data?.result; // 수정된 경로
+        console.log(result[0]);
         if (result) {
-          setCataWallpapers(result); // API로부터 받은 데이터를 상태에 저장
+          const slicedData = result.slice(0, 5);
+          setCataWallpapers(slicedData); // API로부터 받은 데이터를 상태에 저장
         } else {
           console.error("Invalid data structure", data);
           throw new Error("Invalid data structure"); // 적절한 에러 메시지와 함께 예외 발생
