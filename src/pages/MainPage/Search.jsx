@@ -6,7 +6,7 @@ import {
   } from '../../services/mainpage'; // 개별 API 함수를 불러옵니다
 
 const SearchComponent = () => {
-    const [selectedOption, setSelectedOption] = useState('title'); // 사용자가 선택한 옵션
+    const [selectedOption, setSelectedOption] = useState(''); // 사용자가 선택한 옵션
     const [searchQuery, setSearchQuery] = useState(''); // 사용자가 입력한 검색어
     const [searchResults, setSearchResults] = useState([]); // 검색 결과
 

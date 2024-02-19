@@ -3,20 +3,92 @@ import "../../index.css";
 import { Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import HeaderLogo from '../../assets/images/footerlogo2.svg'
 
 
 const resources = [
   {
-    name: "인기 바탕화면",
-
-    href: "/Popular",
+    name: "슈퍼 히어로",
+    href: '/Category/1',
   },
   {
-    name: "인기 카테고리",
-    href: "/Category_Popular",
-  }
+    name: "게임",
+    href: '/Category/2',
+  },
+  {
+    name: "영화",
+    href: '/Category/3',
+  },
+  {
+    name: "연예인",
+    href: '/Category/4',
+  },
+  {
+    name: "자동차",
+    href: '/Category/5',
+  },
+  {
+    name: "자연",
+    href: '/Category/6',
+  },
+  {
+    name: "TV 프로그램",
+    href: '/Category/7',
+  },
+  {
+    name: "여행",
+    href: '/Category/8',
+  },
+  {
+    name: "애니메이션",
+    href: '/Category/9',
+  },
+  {
+    name: "음악",
+    href: '/Category/10',
+  },
+  {
+    name: "사진",
+    href: '/Category/11',
+  },
+  {
+    name: "컴퓨터",
+    href: '/Category/12',
+  },
+
+  {
+    name: "동물",
+    href: '/Category/13',
+  },
+  {
+    name: "스포츠",
+    href: '/Category/14',
+  },
+  {
+    name: "만화",
+    href: '/Category/15',
+  },
+  {
+    name: "축하",
+    href: '/Category/16',
+  },
+  {
+    name: "그래픽",
+    href: '/Category/17',
+  },
+  {
+    name: "영감",
+    href: '/Category/18',
+  },
+  {
+    name: "라이프 스타일",
+    href: '/Category/19',
+  },
+  {
+    name: "음식",
+    href: '/Category/20',
+  },
 ];
 
 function classNames(...classes) {
@@ -24,6 +96,7 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+  const params = useParams();
   const navigate = useNavigate();
 
   const handlehelpdeskClick = () => {
@@ -38,6 +111,7 @@ export default function Header() {
   const handleMainClick = () => {
     setTab('home');
     navigate('/main');
+    window.location.reload();
   };
 
   const handleaboutClick = () => {
@@ -45,6 +119,9 @@ export default function Header() {
     navigate('/About');
   };
 
+  const gotoAllCategory = () => {
+    navigate('/Category_Popular');
+  }
   const [tab, setTab] = useState('vote');
 
   return (
@@ -69,9 +146,14 @@ export default function Header() {
               about
             </button>
 
+            <button
+              className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'about' ? 'active border-b border-[#767676]' : ''}`}
+              onClick={gotoAllCategory}
+            >
+              카테고리
+            </button>
 
-
-            <Popover className="relative">
+            {/* <Popover className="relative">
               {({ open }) => (
                 <>
                   <Popover.Button
@@ -80,7 +162,7 @@ export default function Header() {
                       "group inline-flex items-center rounded-md bg-white text-[18px] font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     )}
                   >
-                    <span>카테고리</span>
+                    <span onClick={gotoAllCategory}>카테고리</span>
                     <ChevronDownIcon
                       className={classNames(
                         open ? "text-gray-600" : "text-gray-400",
@@ -125,7 +207,7 @@ export default function Header() {
                 </>
               )}
 
-            </Popover>
+            </Popover> */}
 
             <button
               className={`py-4 px-4 text-lg font-medium text-gray-500 hover:text-gray-900 ${tab === 'help' ? 'active border-b border-[#767676]' : ''}`}
@@ -136,7 +218,7 @@ export default function Header() {
             </button>
           </div>
 
-          <div className="flex-1 mx-4">
+          {/* <div className="flex-1 mx-4">
             <form className="flex items-center relative">
               <MagnifyingGlassIcon className="pointer-events-none absolute left-3 h-5 w-5 text-gray-400" aria-hidden="true" />
               <input
@@ -147,7 +229,7 @@ export default function Header() {
                 name="search"
               />
             </form>
-          </div>
+          </div> */}
           <div className="flex mr-5 gap-3 space-x-4 items-center">
             <div>
 

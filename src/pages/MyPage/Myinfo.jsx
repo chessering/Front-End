@@ -87,7 +87,7 @@ function Myinfo() {
 
                 </div>
                 <div className="flex mt-20 ml-16 justify-center flex-col">
-                    <div className="mb-2 font-normal">ID</div>
+                    <div className="mb-2 font-normal">닉네임</div>
                     <Container1>{userInfo.nickname}</Container1>
                     <div className="mb-2 font-normal">이름</div>
                     <Container1>{userInfo.name}</Container1>
