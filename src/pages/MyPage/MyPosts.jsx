@@ -139,11 +139,14 @@ function MyPosts() {
             {(clicked) &&
                 <input id={postInfo.post_id} type="checkbox" onClick={(e) => checkHandled(e)} />
             }
-                <div className="flex mr-32 ml-12 pt-2.5 justify-center items-center text-center">{postInfo.post_id}</div>
-                <div className="flex mr-40 pt-2.5 justify-center items-center text-center">{postInfo.title}</div>
-                <div className="flex mr-32 pt-2.5 justify-center items-center text-center">{postInfo.user_id}</div>
-                <div className="flex mr-32 pt-2.5 justify-center items-center text-center">{postInfo.createdAt}</div>
-                <div className="flex mr-12 pt-2.5 justify-center items-center text-center">{postInfo.like_count}</div>
+            <div className="flex flex-row justify-between w-12/12 mx-auto">
+                <div className="flex w-28 float-left pt-2.5">{postInfo.post_id}</div>
+                <div className="flex w-40 px-auto pt-2.5 justify-center items-center text-center">{postInfo.title}</div>
+                <div className="flex mx-48 px-auto pt-2.5 justify-center items-center text-center">{postInfo.user_id}</div>
+                <div className="flex mx-16 px-auto pt-2.5 justify-center items-center text-center">{postInfo.createdAt}</div>
+                <div className="flex ml-8 pt-2.5 justify-center items-center text-center">{postInfo.like_count}</div>
+            </div>
+                
             </div>
         </StyledList>
     ));
@@ -169,11 +172,11 @@ function MyPosts() {
 
             <div className="flex w-7/12 flex-col">
                 <div className="flex flex-row align-middle justify-between w-12/12 mb-2">
-                    <div className="mr-32 ml-8">Post ID</div>
+                    <div className="mr-12 ml-16">Post ID</div>
                     <div className="mr-40">제목</div>
-                    <div className="mr-32">작성자</div>
-                    <div className="mr-32">작성일</div>
-                    <div className="mr-8">좋아요</div>
+                    <div className="mr-52">작성자</div>
+                    <div className="mr-16">작성일</div>
+                    <div className="mr-16">좋아요</div>
                 </div>
                 <div className="mb-12">
                     <StyledList>
